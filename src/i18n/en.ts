@@ -12,14 +12,14 @@ export const en = {
 
   'home.title': 'Make it. Slice it. Print it.',
   'home.subtitle':
-    'Name keychains, signs, QR tags, lithophanes and the calculators every maker needs. Free, open source, no sign-up.',
+    'Name keychains, logos from SVG, Gridfinity bins, boxes, cookie cutters, lithophanes, ready-made models and the printer tools every maker needs. Free, open source, no sign-up, works offline.',
   'home.cta': 'Make a keychain',
   'home.f1.title': '100% in your browser',
   'home.f1.text': 'Geometry is built locally with WebAssembly. Nothing is uploaded.',
   'home.f2.title': 'STL & multi-colour 3MF',
   'home.f2.text': 'Separate bodies for text and base: ready for AMS, MMU or a filament swap.',
   'home.f3.title': 'Cyrillic & Latin fonts',
-  'home.f3.text': 'Nine bundled fonts that handle Иван as well as Ivan.',
+  'home.f3.text': 'Nine bundled fonts that write Иван as well as Ivan. Bulgarian and English interface.',
   'home.tools': 'Tools',
 
   'tool.keychain.title': 'Name keychain',
@@ -353,7 +353,7 @@ export const en = {
   'g.time': "Print time",
   'g.filament': "Filament",
   'g.heights': "Change at heights (mm)",
-  'g.heightsHint': "Separate with commas. Each change happens before the first layer at or above that height.",
+  'g.heightsHint': "Separate with commas. Each change happens before the first layer printed above that height.",
   'g.command': "Command",
   'g.cmd.M600': "M600: filament change (Prusa, Marlin)",
   'g.cmd.PAUSE': "PAUSE: Klipper macro",

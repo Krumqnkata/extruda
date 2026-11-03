@@ -87,11 +87,14 @@ export function commandLines(cmd: ChangeCommand, message: string, z: number): st
   return out;
 }
 
-/** The first layer at or above each height (in mm), without duplicates. */
+/**
+ * The first layer printed above each height (in mm), without duplicates. A layer's Z is its top,
+ * so with a 3 mm base the layer at Z = 3.0 is still base and the change goes before Z = 3.2.
+ */
 export function layersAtHeights(info: GcodeInfo, heights: number[]): Layer[] {
   const out: Layer[] = [];
   for (const h of heights) {
-    const layer = info.layers.find((l) => l.z >= h - 1e-6);
+    const layer = info.layers.find((l) => l.z > h + 1e-6);
     if (layer && !out.includes(layer)) out.push(layer);
   }
   return out.sort((a, b) => a.line - b.line);

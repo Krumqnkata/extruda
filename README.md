@@ -7,7 +7,7 @@
 **Your free 3D print workshop in the browser**<br/>
 **Твоята безплатна 3D работилница в браузъра**
 
-Name keychains · signs & 3D text · QR tags · lithophanes · print calculators · STL analyzer
+Keychains · logos from SVG · Gridfinity · boxes · cookie cutters · stencils · lithophanes · ready-made models · G-code colour change · calibration
 
 [![Open Extruda](https://img.shields.io/badge/▶_Open_Extruda-krumqnkata.github.io%2Fextruda-ff6a1f?style=for-the-badge)](https://krumqnkata.github.io/extruda/)
 
@@ -32,25 +32,48 @@ Extruda turns text and pictures into ready-to-print 3D models **right in your br
 account, no upload and no install: the geometry is built on your device with WebAssembly, and you
 download an STL or a multi-colour 3MF.
 
-### Tools
+### Generators
 
 | | Tool | What it does |
 | --- | --- | --- |
-| 🔑 | **Name keychain** | Type a name, choose one of 9 fonts, tune the border and key ring. Raised, engraved or flush-inlay text. **Batch mode** turns a list of names into a ZIP of STLs. |
-| 🪧 | **Signs & 3D text** | Door plates, desk signs and labels: multi-line text, rounded/pill/text-following plates, frames, screw holes. Or just free-standing 3D letters. |
-| 🔳 | **QR code tag** | Links, text or Wi-Fi login as a two-colour QR plate, with an optional label and hanging hole. Cyrillic content is encoded as UTF-8. |
-| 🖼️ | **Lithophane** | Flat, curved or cylindrical lithophanes from any photo, with a back-lit preview, contrast/brightness, frame and detail control. |
-| 🧮 | **Calculators** | Print cost & selling price (filament, electricity, printer wear, failures, margin), filament weight ↔ length, E-steps and flow calibration. |
-| 📐 | **STL analyzer** | Open STL, 3MF or OBJ to see dimensions, volume, surface area, estimated weight, filament length and material cost. |
+| 🔑 | **Name keychain** | Type a name, pick one of 9 fonts, add an icon or your own SVG. Raised, engraved or flush-inlay text. **Batch mode** turns a list of names into a ZIP or a **full build plate** in one 3MF. |
+| ⭐ | **Logo & SVG to 3D** | Upload an SVG (every colour becomes its own part) or a PNG silhouette, or use text or an icon. Badges, magnets, logos on a plate or contour base. |
+| 🪧 | **Signs & 3D text** | Door plates, desk signs and labels: multi-line text, rounded/pill/text-following plates, frames, screw holes. Or free-standing 3D letters. |
+| 🔳 | **QR code tag** | Links, text or Wi-Fi login as a two-colour QR plate with a label and hanging hole. Cyrillic is encoded as UTF-8. |
+| 🗃️ | **Gridfinity** | Bins with dividers, label shelf, stacking lip and magnet holes, to the spec. **Baseplates sized to your drawer**, split automatically to fit your printer. |
+| 📦 | **Box with lid** | Boxes to the millimetre with dividers and a slip-on, plug-in or sliding lid, adjustable clearance and engraved or inlaid lid text. |
+| 🍪 | **Cookie cutter & stamp** | Cutters from text, icons, SVG or PNG with a thin cutting edge and grip rim, plus a matching embossing stamp. |
+| ✂️ | **Stencil** | Text or artwork cut out of a plate, with automatic bridges so the middles of O, A, P and B stay in place. |
+| 🖼️ | **Lithophane** | Flat, curved or cylindrical lithophanes from any photo, with a back-lit preview. |
+
+### Ready-made models
+
+A gallery of 12 everyday prints you personalise in seconds: phone & tablet stand, cable organizer, pen cup with a name
+wrapped around it, desk name plate with stand, wall hook, plant pot with saucer, door wedge, coaster, bookmark,
+gift tag, Christmas ornament and a two-sided pet ID tag.
+
+### Printer tools
+
+| | Tool | What it does |
+| --- | --- | --- |
+| 🎨 | **G-code colour change** | Open a `.gcode` from PrusaSlicer, OrcaSlicer, Cura or Bambu Studio, pick heights, and Extruda inserts `M600`, `PAUSE`, `M601` or `M0`. Two-colour keychains without an AMS. |
+| 📏 | **Calibration prints** | Print-in-place tolerance test, overhang test and bridging test, each with its values printed on it. |
+| 🏷️ | **Filament swatches** | Labelled sample cards with a 0.4–2.0 mm thickness staircase; a whole list goes onto one plate. |
+| 🧮 | **Calculators** | Print cost & price, filament weight ↔ length, filament left on a spool, E-steps and flow calibration. |
+| 📐 | **STL analyzer** | Open STL, 3MF or OBJ for size, volume, estimated weight and cost, then send the grams to the calculators. |
 
 <table>
 <tr>
-<td><img src="docs/screenshots/sign.png" alt="Signs and 3D text" /></td>
-<td><img src="docs/screenshots/qr.png" alt="QR code tag" /></td>
+<td><img src="docs/screenshots/gridfinity.png" alt="Gridfinity bin generator" /></td>
+<td><img src="docs/screenshots/models.png" alt="Ready-made models gallery" /></td>
 </tr>
 <tr>
-<td><img src="docs/screenshots/lithophane.png" alt="Lithophane" /></td>
-<td><img src="docs/screenshots/calculators.png" alt="Calculators" /></td>
+<td><img src="docs/screenshots/logo.png" alt="Logo and SVG to 3D" /></td>
+<td><img src="docs/screenshots/box.png" alt="Box with lid" /></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/cutter.png" alt="Cookie cutter" /></td>
+<td><img src="docs/screenshots/calibration.png" alt="Calibration prints" /></td>
 </tr>
 </table>
 
@@ -61,10 +84,13 @@ download an STL or a multi-colour 3MF.
 - **Multi-colour ready** – the 3MF keeps text and base as separate parts, so Bambu Studio, OrcaSlicer and PrusaSlicer can assign a filament to each (AMS / MMU / colour swap).
 - **Cyrillic and Latin** – every bundled font writes *Иван* as well as *Ivan*.
 - **Bilingual UI** – Bulgarian and English, light and dark theme, works on phones.
+- **Share a design as a link** – the settings travel in the URL (Wi-Fi passwords never do). Save favourite settings per tool.
+- **Works offline** – install it as an app; tools, fonts and the geometry engine are cached.
 
 ### Printing tips
 
-- Keychains: 0.2 mm layers, 3–4 walls. For two colours without an AMS, use *Raised* and add a filament change at the first text layer.
+- Keychains: 0.2 mm layers, 3–4 walls. For two colours without an AMS, use *Raised*, slice, then let the **G-code colour change** tool add the change at the base thickness.
+- Gridfinity and boxes: check your clearance with the **tolerance test** first.
 - Lithophanes: print standing up, 100% infill, 0.12–0.16 mm layers, white PLA.
 - QR codes: modules of 1.5 mm or more; scan the on-screen preview before printing.
 
@@ -83,7 +109,8 @@ Open <http://localhost:5173/extruda/>. Other scripts: `npm test`, `npm run typec
 Every push to `main` is tested and deployed to GitHub Pages by [this workflow](.github/workflows/deploy.yml).
 
 ```
-src/core/    geometry & maths: text outlines, model builders, lithophane mesh, STL/3MF export, calculators
+src/core/    geometry & maths: text, SVG, image tracing, model builders, Gridfinity, G-code, STL/3MF export
+src/models/  ready-made models gallery (one entry per model)
 src/tools/   one page per tool
 src/i18n/    Bulgarian and English strings
 tests/       Vitest: meshes must be watertight, numbers must add up
@@ -99,16 +126,35 @@ Extruda превръща текст и снимки в готови за при�
 регистрация, без качване, без инсталация: геометрията се изчислява на твоето устройство с
 WebAssembly, а ти сваляш STL или многоцветен 3MF.
 
-### Инструменти
+### Генератори
 
 | | Инструмент | Какво прави |
 | --- | --- | --- |
-| 🔑 | **Ключодържател с име** | Напиши име, избери един от 9 шрифта, настрой рамката и халката. Изпъкнал, гравиран или вграден текст. **Масов режим** – ZIP с STL за цял списък от имена. |
-| 🪧 | **Табели и 3D текст** | Табели за врата и бюро, етикети: текст на няколко реда, заоблени/овални плочки или по формата на текста, рамка, отвори за винтове. Или само 3D букви. |
-| 🔳 | **QR етикет** | Линк, текст или Wi-Fi достъп като двуцветна QR плочка с надпис и отвор за закачане. Кирилицата се кодира правилно (UTF-8). |
-| 🖼️ | **Литофан** | Плосък, извит или цилиндричен литофан от снимка, с преглед „на светлина“, контраст, яркост, рамка и детайл. |
-| 🧮 | **Калкулатори** | Себестойност и цена на принт (филамент, ток, амортизация, брак, печалба), тегло ↔ дължина на филамент, калибриране на E-steps и flow. |
-| 📐 | **STL анализатор** | Отвори STL, 3MF или OBJ и виж размери, обем, повърхност, приблизително тегло, дължина на филамента и цена. |
+| 🔑 | **Ключодържател с име** | Напиши име, избери шрифт, добави иконка или свой SVG. Изпъкнал, гравиран или вграден текст. **Масов режим** – ZIP или **пълна плоча** в един 3MF. |
+| ⭐ | **Лого и SVG в 3D** | Качи SVG (всеки цвят става отделна част) или силует от PNG, или използвай текст или иконка. Значки, магнити, лога. |
+| 🪧 | **Табели и 3D текст** | Табели за врата и бюро, етикети, рамка, отвори за винтове, или само 3D букви. |
+| 🔳 | **QR етикет** | Линк, текст или Wi-Fi като двуцветна QR плочка с надпис и отвор. |
+| 🗃️ | **Gridfinity** | Кутийки с прегради, лайсна за етикет, борд и гнезда за магнити по спецификацията. **Основи по мярка на чекмеджето**, разделени автоматично според принтера. |
+| 📦 | **Кутия с капак** | Кутии до милиметър с прегради и нахлузващ, вграден или плъзгащ капак, настройваема хлабина и надпис на капака. |
+| 🍪 | **Калъп за сладки и печат** | Калъпи от текст, иконка, SVG или PNG с тънък режещ ръб и ръб за хващане, плюс печат за релеф. |
+| ✂️ | **Шаблон (стенцил)** | Текст или рисунка, изрязани от плочка, с автоматични мостчета, за да не падат средите на О, А, Р и Б. |
+| 🖼️ | **Литофан** | Плосък, извит или цилиндричен литофан от снимка с преглед „на светлина“. |
+
+### Готови модели
+
+Галерия с 12 полезни предмета, които персонализираш за секунди: стойка за телефон и таблет, органайзер за кабели,
+чаша за моливи с име, табелка с име за бюро, кукичка за стена, саксия с подложка, клин за врата, подложка за чаша,
+отметка за книга, етикет за подарък, коледна играчка и двустранен медальон за домашен любимец.
+
+### Инструменти за принтера
+
+| | Инструмент | Какво прави |
+| --- | --- | --- |
+| 🎨 | **Смяна на цвят в G-code** | Отвори `.gcode` от PrusaSlicer, OrcaSlicer, Cura или Bambu Studio, избери височини и Extruda добавя `M600`, `PAUSE`, `M601` или `M0`. |
+| 📏 | **Калибрационни тестове** | Тест за хлабина (принтира се наведнъж), за надвес и за мостове, с отпечатани стойности. |
+| 🏷️ | **Мостри на филамент** | Надписани мостри със стъпала 0,4–2,0 мм; цял списък на една плоча. |
+| 🧮 | **Калкулатори** | Цена на принт, тегло ↔ дължина, оставащ филамент на масура, E-steps и flow. |
+| 📐 | **STL анализатор** | Размери, обем, тегло и цена за STL, 3MF или OBJ, с прехвърляне към калкулаторите. |
 
 ### Защо е удобно
 
@@ -117,10 +163,13 @@ WebAssembly, а ти сваляш STL или многоцветен 3MF.
 - **Готово за многоцветен печат** – в 3MF файла текстът и основата са отделни части – за AMS, MMU или смяна на филамент.
 - **Кирилица и латиница** – всички шрифтове пишат *Иван* толкова добре, колкото и *Ivan*.
 - **Двуезичен интерфейс** – български и английски, светла и тъмна тема, работи и на телефон.
+- **Споделяне с линк** – настройките са в адреса (паролите за Wi-Fi никога). Любими настройки за всеки инструмент.
+- **Работи офлайн** – инсталирай го като приложение; инструментите, шрифтовете и 3D двигателят се кешират.
 
 ### Съвети за принтиране
 
-- Ключодържатели: слоеве 0,2 мм, 3–4 стени. За два цвята без AMS избери *Изпъкнал* и добави смяна на филамента на първия слой от текста.
+- Ключодържатели: слоеве 0,2 мм, 3–4 стени. За два цвята без AMS избери *Изпъкнал*, нарежи и остави **Смяна на цвят в G-code** да добави смяната на височината на основата.
+- Gridfinity и кутии: първо провери хлабината с **теста за хлабина**.
 - Литофани: изправени, 100% запълване, слоеве 0,12–0,16 мм, бял PLA.
 - QR кодове: модули поне 1,5 мм; сканирай прегледа на екрана, преди да принтираш.
 

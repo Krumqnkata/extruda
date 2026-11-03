@@ -241,6 +241,8 @@ describe('g-code', () => {
 
   it('inserts M600 right before the chosen layer and changes nothing else', () => {
     const info = parseGcode(prusa);
+    // Z is the top of a layer: changing "at 0.2 mm" must keep the 0.2 layer in the old colour.
+    expect(layersAtHeights(info, [0.2]).map((l) => l.z)).toEqual([0.4]);
     const layers = layersAtHeights(info, [0.35]);
     expect(layers.map((l) => l.z)).toEqual([0.4]);
     const out = insertChanges(prusa, layers, 'M600', 'Text colour');

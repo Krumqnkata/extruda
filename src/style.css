@@ -919,14 +919,6 @@ input[type='range'] {
 }
 
 /* ------------------------------------------------------------ responsive */
-@media (max-width: 1100px) and (min-width: 901px) {
-  .nav > a span:not(.icon) {
-    display: none;
-  }
-  .nav > a {
-    padding: 8px;
-  }
-}
 @media (max-width: 900px) {
   .tool {
     display: flex;
