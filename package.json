@@ -1,0 +1,46 @@
+{
+  "name": "extruda",
+  "version": "1.0.0",
+  "description": "Free in-browser 3D print workshop: name keychains, signs, QR codes, lithophanes, STL analyzer and print calculators.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "3d-printing",
+    "stl",
+    "3mf",
+    "keychain",
+    "lithophane",
+    "qr-code",
+    "threejs",
+    "manifold"
+  ],
+  "author": "Krumqnkata",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "dependencies": {
+    "fflate": "^0.8.3",
+    "manifold-3d": "^3.5.4",
+    "opentype.js": "^2.0.0",
+    "qrcode-generator": "^2.0.4",
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/opentype.js": "^1.3.10",
+    "@types/three": "^0.187.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "vitest": "^5.1.0"
+  },
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Krumqnkata/extruda.git"
+  },
+  "homepage": "https://krumqnkata.github.io/extruda/"
+}

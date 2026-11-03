@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Extruda · Free 3D print workshop</title>
+    <meta name="description" content="Free in-browser 3D print workshop: name keychains, signs, QR codes, lithophanes, STL analyzer and print cost calculators. Exports STL and multi-colour 3MF. Bulgarian & English." />
+    <meta name="theme-color" content="#ff6a1f" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Extruda · Free 3D print workshop" />
+    <meta property="og:description" content="Name keychains, signs, QR tags, lithophanes and calculators for 3D printing. Free, open source, runs in your browser." />
+    <meta property="og:url" content="https://krumqnkata.github.io/extruda/" />
+    <meta property="og:image" content="https://krumqnkata.github.io/extruda/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script>
+      try {
+        var th = localStorage.getItem('extruda.theme');
+        if (th === 'light' || th === 'dark') document.documentElement.dataset.theme = th;
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <noscript>Extruda needs JavaScript to build 3D models in your browser.</noscript>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

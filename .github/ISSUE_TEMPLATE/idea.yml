@@ -1,0 +1,14 @@
+name: Tool idea / Идея за инструмент
+description: Suggest a new generator or calculator. / Предложи нов генератор или калкулатор.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What should it make? / Какво трябва да прави?
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Example use / Пример за употреба

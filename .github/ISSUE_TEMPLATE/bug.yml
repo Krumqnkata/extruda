@@ -1,0 +1,23 @@
+name: Bug report / Бъг
+description: Something is broken or a model came out wrong. / Нещо не работи или моделът е грешен.
+labels: [bug]
+body:
+  - type: input
+    id: tool
+    attributes:
+      label: Tool / Инструмент
+      placeholder: Name keychain, Lithophane, …
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened? / Какво се случи?
+      description: Steps, settings and text you used. Screenshots help. / Стъпки, настройки и текст. Скрийншот помага.
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser & device / Браузър и устройство
+      placeholder: Chrome 140, Windows 11
