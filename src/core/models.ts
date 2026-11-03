@@ -38,10 +38,20 @@ export function styledParts(
   m: ManifoldToplevel,
   base2D: CrossSection,
   text2D: CrossSection,
-  o: { style: TextStyle; baseThickness: number; textThickness: number; baseColor: string; textColor: string; extra2D?: CrossSection },
+  o: {
+    style: TextStyle;
+    baseThickness: number;
+    textThickness: number;
+    baseColor: string;
+    textColor: string;
+    extra2D?: CrossSection;
+    /** Engraved 0.6 mm into the underside, already mirrored by the caller (e.g. a phone number on a tag's back). */
+    back2D?: CrossSection;
+  },
 ): Part[] {
   const { Manifold } = m;
   let base = Manifold.extrude(base2D, o.baseThickness);
+  if (o.back2D && !o.back2D.isEmpty()) base = base.subtract(Manifold.extrude(o.back2D, 0.61).translate([0, 0, -0.01]));
   const extra = o.extra2D ? Manifold.extrude(o.extra2D, o.textThickness).translate([0, 0, o.baseThickness]) : undefined;
   if (o.style === 'raised') {
     let text = Manifold.extrude(text2D, o.textThickness).translate([0, 0, o.baseThickness]);

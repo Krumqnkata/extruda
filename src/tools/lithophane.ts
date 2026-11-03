@@ -76,7 +76,7 @@ function backlightColors(thickness: Float32Array, s: State): Float32Array {
 export function mount(container: HTMLElement): () => void {
   const defaults: State = { ...LITHO_DEFAULTS, contrast: 1, brightness: 0, backlight: true };
   const state = persisted('lithophane', defaults);
-  const shell = toolShell('tool.lithophane.title', 'tool.lithophane.desc');
+  const shell = toolShell(t('tool.lithophane.title'), t('tool.lithophane.desc'));
   container.append(shell.root);
   const viewer = new Viewer(shell.host);
   let parts: Part[] = [];

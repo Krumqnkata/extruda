@@ -10,17 +10,20 @@ export function encodeState(state: object, omit: string[] = []): string {
   return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
-/** Returns only keys that exist in `defaults` with the same type; anything else is ignored. */
+/** Keeps only keys that exist in `defaults` with the same type; anything else is ignored. */
+export function pickKnown<T extends object>(raw: Record<string, unknown>, defaults: T): Partial<T> {
+  const out: Partial<T> = {};
+  for (const k of Object.keys(defaults) as (keyof T & string)[]) {
+    if (k in raw && typeof raw[k] === typeof defaults[k]) (out as Record<string, unknown>)[k] = raw[k];
+  }
+  return out;
+}
+
 export function decodeState<T extends object>(text: string, defaults: T): Partial<T> {
   try {
     const bin = atob(text.replace(/-/g, '+').replace(/_/g, '/'));
     const bytes = Uint8Array.from(bin, (c) => c.charCodeAt(0));
-    const raw = JSON.parse(new TextDecoder().decode(bytes)) as Record<string, unknown>;
-    const out: Partial<T> = {};
-    for (const k of Object.keys(defaults) as (keyof T & string)[]) {
-      if (k in raw && typeof raw[k] === typeof defaults[k]) (out as Record<string, unknown>)[k] = raw[k];
-    }
-    return out;
+    return pickKnown(JSON.parse(new TextDecoder().decode(bytes)) as Record<string, unknown>, defaults);
   } catch {
     return {};
   }

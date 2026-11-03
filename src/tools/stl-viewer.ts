@@ -42,9 +42,22 @@ async function parseFile(file: File): Promise<TriMesh> {
   return objectToMesh(new THREE.Mesh(geo));
 }
 
+/** Hands the estimated grams to the cost and spool calculators. */
+function toCalculators(grams: number): void {
+  try {
+    const key = 'extruda.calc';
+    const calc = JSON.parse(localStorage.getItem(key) ?? '{}') as Record<string, unknown>;
+    const g = Math.round(grams * 10) / 10;
+    localStorage.setItem(key, JSON.stringify({ ...calc, grams: g, spoolNeed: g }));
+  } catch {
+    /* storage unavailable: the calculators open with their own values */
+  }
+  location.hash = '#/calculators';
+}
+
 export function mount(container: HTMLElement): () => void {
   const state = persisted('stl', DEFAULTS);
-  const shell = toolShell('tool.stl.title', 'tool.stl.desc');
+  const shell = toolShell(t('tool.stl.title'), t('tool.stl.desc'));
   shell.root.classList.add('analyzer');
   container.append(shell.root);
   const viewer = new Viewer(shell.host);
@@ -74,6 +87,7 @@ export function mount(container: HTMLElement): () => void {
       row('stl.length', `${fmt(filamentMeters(w.grams, 1.75, density), 2)} ${t('u.m')}`),
       row('stl.cost', `${fmt((w.grams / 1000) * state.pricePerKg, 2)} ${state.currency}`, true),
       hint(t('stl.estimateHint')),
+      el('button', { type: 'button', class: 'btn', onclick: () => toCalculators(w.grams) }, el('span', { class: 'icon', html: icons.calc }), t('stl.toCalc')),
     );
   };
 

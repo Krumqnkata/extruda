@@ -3,9 +3,11 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the
 // GNU Affero General Public License as published by the Free Software Foundation, version 3 or later.
 import './style.css';
+import { registerSW } from 'virtual:pwa-register';
 import { registerFontFaces } from './core/fonts';
 import { getLang, onLangChange, setLang, t } from './i18n';
-import { TOOLS } from './tools';
+import { parseHash } from './core/share';
+import { GROUPS, TOOLS, type ToolEntry } from './tools';
 import { el } from './ui/form';
 import { icons } from './ui/icons';
 
@@ -37,21 +39,40 @@ function applyTheme(theme: Theme | null): void {
 const app = document.getElementById('app')!;
 const main = el('main', { id: 'main' });
 
+const currentRoute = () => parseHash(location.hash).path.split('/')[0];
+
+function navLink(tool: ToolEntry, route: string): HTMLElement {
+  return el(
+    'a',
+    { href: `#/${tool.id}`, class: route === tool.id ? 'active' : '', 'aria-current': route === tool.id ? 'page' : null },
+    el('span', { class: 'icon', html: tool.icon, 'aria-hidden': 'true' }),
+    el('span', {}, t(tool.title)),
+  );
+}
+
 function header(): HTMLElement {
-  const route = location.hash.replace(/^#\/?/, '');
+  const route = currentRoute();
   const nav = el(
     'nav',
     { class: 'nav', 'aria-label': t('home.tools') },
-    ...TOOLS.map((tool) =>
-      el('a', { href: `#/${tool.id}`, class: route === tool.id ? 'active' : '', 'aria-current': route === tool.id ? 'page' : null },
-        el('span', { class: 'icon', html: tool.icon, 'aria-hidden': 'true' }),
-        el('span', {}, t(tool.title))),
-    ),
+    ...GROUPS.map((g) => {
+      const tools = TOOLS.filter((x) => x.group === g.id);
+      if (tools.length === 1) return navLink(tools[0], route);
+      const active = tools.some((x) => x.id === route);
+      return el(
+        'details',
+        { class: active ? 'nav-group active' : 'nav-group' },
+        el('summary', {}, t(g.title), el('span', { class: 'icon chevron', html: icons.chevron, 'aria-hidden': 'true' })),
+        el('div', { class: 'nav-menu' }, ...tools.map((x) => navLink(x, route))),
+      );
+    }),
   );
   const menu = el('button', { type: 'button', class: 'btn icon-only menu-btn', 'aria-label': t('nav.menu'), 'aria-expanded': 'false', html: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>' });
   menu.addEventListener('click', () => {
     const open = nav.classList.toggle('open');
     menu.setAttribute('aria-expanded', String(open));
+    // On phones the menu shows every group expanded.
+    nav.querySelectorAll('details').forEach((d) => (d.open = open));
   });
   return el(
     'header',
@@ -122,18 +143,20 @@ function home(container: HTMLElement): void {
             el('a', { class: 'btn big', href: REPO, target: '_blank', rel: 'noopener' }, el('span', { class: 'icon', html: icons.github, 'aria-hidden': 'true' }), 'GitHub'))),
         el('div', { class: 'hero-art', 'aria-hidden': 'true' }, el('img', { src: LOGO, alt: '' })),
       ),
-      el('h2', { class: 'section-title' }, t('home.tools')),
-      el(
-        'div',
-        { class: 'cards' },
-        ...TOOLS.map((tool) =>
-          el('a', { class: 'card tool-card', href: `#/${tool.id}` },
-            el('span', { class: 'icon badge', html: tool.icon, 'aria-hidden': 'true' }),
-            el('h3', {}, t(tool.title)),
-            el('p', {}, t(tool.desc)),
-            el('span', { class: 'go icon', html: icons.arrow, 'aria-hidden': 'true' })),
+      ...GROUPS.flatMap((g) => [
+        el('h2', { class: 'section-title' }, t(g.title)),
+        el(
+          'div',
+          { class: 'cards' },
+          ...TOOLS.filter((tool) => tool.group === g.id).map((tool) =>
+            el('a', { class: 'card tool-card', href: `#/${tool.id}` },
+              el('span', { class: 'icon badge', html: tool.icon, 'aria-hidden': 'true' }),
+              el('h3', {}, t(tool.title)),
+              el('p', {}, t(tool.desc)),
+              el('span', { class: 'go icon', html: icons.arrow, 'aria-hidden': 'true' })),
+          ),
         ),
-      ),
+      ]),
       el(
         'div',
         { class: 'features' },
@@ -155,8 +178,7 @@ async function route(): Promise<void> {
   cleanup?.();
   cleanup = undefined;
   main.replaceChildren();
-  const id = location.hash.replace(/^#\/?/, '');
-  const tool = TOOLS.find((x) => x.id === id);
+  const tool = TOOLS.find((x) => x.id === currentRoute());
   document.title = tool ? `${t(tool.title)} · Extruda` : `Extruda · ${t('app.tagline')}`;
   document.body.dataset.page = tool ? 'tool' : 'home';
   if (!tool) {
@@ -182,6 +204,13 @@ document.documentElement.lang = getLang();
 applyTheme(storedTheme());
 registerFontFaces();
 window.addEventListener('hashchange', rerender);
+// Close open navigation menus when clicking anywhere else.
+document.addEventListener('click', (e) => {
+  if (document.querySelector('.nav.open')) return;
+  for (const d of document.querySelectorAll<HTMLDetailsElement>('.nav-group[open]')) {
+    if (!d.contains(e.target as Node)) d.open = false;
+  }
+});
 onLangChange(rerender);
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
   if (storedTheme()) return;
@@ -189,3 +218,11 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () 
   renderChrome();
 });
 rerender();
+
+function toast(message: string): void {
+  const note = el('div', { class: 'toast', role: 'status' }, message);
+  document.body.append(note);
+  setTimeout(() => note.remove(), 4000);
+}
+
+registerSW({ immediate: true, onOfflineReady: () => toast(t('pwa.offline')) });

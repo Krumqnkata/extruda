@@ -47,3 +47,8 @@ export function t(key: Key, vars?: Record<string, string | number>): string {
 export function fmt(n: number, digits = 1): string {
   return n.toLocaleString(lang === 'bg' ? 'bg-BG' : 'en-US', { minimumFractionDigits: digits, maximumFractionDigits: digits });
 }
+
+/** Inline English/Bulgarian pair, used by gallery models so each model lives in one file. */
+export function tr(pair: readonly [string, string]): string {
+  return lang === 'bg' ? pair[1] : pair[0];
+}

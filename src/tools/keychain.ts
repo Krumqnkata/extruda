@@ -2,34 +2,32 @@
 import { download, fileSafe, partsToSTL, zipFiles } from '../core/export';
 import { build } from '../core/manifold';
 import { KEYCHAIN_DEFAULTS, keychainParts, type KeychainParams } from '../core/models';
-import { FONTS } from '../core/fonts';
 import { loadFont } from '../core/text';
 import { t } from '../i18n';
+import { artAsShape2D, artDropZone } from '../ui/artSource';
 import { button, color, el, hint, range, section, segmented, select, text, type Ctl } from '../ui/form';
 import { icons } from '../ui/icons';
 import { mountModelTool } from '../ui/modelTool';
+import { fontOptions, iconOptions, styleOptions } from '../ui/options';
+import { downloadPlates, PLATE_DEFAULTS, plateSection, type PlateState } from '../ui/plate';
 
-type State = KeychainParams & { font: string; batch: string };
+type State = KeychainParams & PlateState & { font: string; batch: string };
 
-export const fontOptions = (): [string, string][] => FONTS.map((f) => [f.id, f.name]);
-
-export const styleOptions = (): [string, string][] => [
-  ['raised', t('f.style.raised')],
-  ['engraved', t('f.style.engraved')],
-  ['inlay', t('f.style.inlay')],
-];
+const customIcon = () => artAsShape2D('keychain', { threshold: 0.5, invertImage: false });
 
 export function mount(container: HTMLElement): () => void {
   return mountModelTool<State>(
     {
       id: 'keychain',
-      titleKey: 'tool.keychain.title',
-      descKey: 'tool.keychain.desc',
-      defaults: { ...KEYCHAIN_DEFAULTS, font: 'lobster', batch: 'Мария\nГеорги\nAlex' },
-      build: (m, font, s) => keychainParts(m, font, s),
+      title: t('tool.keychain.title'),
+      desc: t('tool.keychain.desc'),
+      defaults: { ...KEYCHAIN_DEFAULTS, ...PLATE_DEFAULTS, font: 'lobster', batch: 'Мария\nГеорги\nAlex' },
+      linkOmit: ['batch'],
+      build: (m, font, s) => keychainParts(m, font, s, s.icon === 'custom' ? customIcon() : undefined),
       fileName: (s) => `keychain_${s.text}`,
       controls: (ctl: Ctl<State>) => {
         const s = ctl.state;
+        const status = el('p', { class: 'hint', role: 'status' });
         return [
           section(
             t('sec.text'),
@@ -37,6 +35,18 @@ export function mount(container: HTMLElement): () => void {
             select(ctl, 'font', t('f.font'), fontOptions(), { fontPreview: true }),
             range(ctl, 'height', t('f.height'), { min: 5, max: 40, step: 0.5, unit: t('u.mm') }),
             range(ctl, 'spacing', t('f.spacing'), { min: -3, max: 5, step: 0.1, unit: t('u.mm') }),
+          ),
+          section(
+            t('f.icon'),
+            select(ctl, 'icon', t('f.icon'), [['', t('f.icon.none')], ...iconOptions(), ['custom', t('f.icon.custom')]]),
+            s.icon === 'custom' && artDropZone('keychain', () => ctl.change(true)),
+            s.icon === 'custom' && hint(t('f.artHint')),
+            s.icon !== '' && range(ctl, 'iconSize', t('f.iconSize'), { min: 0, max: 40, step: 0.5, unit: t('u.mm') }),
+            s.icon !== '' &&
+              segmented(ctl, 'iconPosition', t('f.iconPosition'), [
+                ['before', t('f.iconPosition.before')],
+                ['after', t('f.iconPosition.after')],
+              ]),
           ),
           section(
             t('sec.shape'),
@@ -69,7 +79,9 @@ export function mount(container: HTMLElement): () => void {
             t('sec.batch'),
             text(ctl, 'batch', t('f.batchNames'), { multiline: true, rows: 4, hint: t('f.batchHint') }),
             button(t('a.zip'), () => void batchZip(s), { icon: icons.zip }),
+            status,
           ),
+          plateSection(ctl, () => void downloadPlates(s, 'keychains', () => batchModels(s), (msg) => (status.textContent = msg))),
         ];
       },
     },
@@ -77,17 +89,23 @@ export function mount(container: HTMLElement): () => void {
   );
 }
 
-async function batchZip(s: State): Promise<void> {
-  const names = s.batch.split(/\r?\n/).map((n) => n.trim()).filter(Boolean);
-  if (!names.length) return;
+const names = (s: State) => s.batch.split(/\r?\n/).map((n) => n.trim()).filter(Boolean);
+
+async function batchModels(s: State) {
   const font = await loadFont(s.font);
+  const icon = s.icon === 'custom' ? customIcon() : undefined;
+  const out = [];
+  for (const name of names(s)) out.push({ name, parts: await build((m) => keychainParts(m, font, { ...s, text: name }, icon)) });
+  return out;
+}
+
+async function batchZip(s: State): Promise<void> {
   const files: Record<string, Uint8Array> = {};
-  for (const name of names) {
-    const parts = await build((m) => keychainParts(m, font, { ...s, text: name }));
+  for (const { name, parts } of await batchModels(s)) {
     if (!parts.length) continue;
     let file = `${fileSafe(name)}.stl`;
     for (let i = 2; files[file]; i++) file = `${fileSafe(name)}_${i}.stl`;
     files[file] = partsToSTL(parts, `Extruda keychain ${name}`);
   }
-  download(zipFiles(files), 'keychains.zip', 'application/zip');
+  if (Object.keys(files).length) download(zipFiles(files), 'keychains.zip', 'application/zip');
 }

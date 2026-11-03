@@ -3,7 +3,7 @@ import { SIGN_DEFAULTS, signParts, type SignParams } from '../core/models';
 import { t } from '../i18n';
 import { check, color, el, hint, range, section, segmented, select, text, type Ctl } from '../ui/form';
 import { mountModelTool } from '../ui/modelTool';
-import { fontOptions, styleOptions } from './keychain';
+import { fontOptions, styleOptions } from '../ui/options';
 
 type State = SignParams & { font: string };
 
@@ -11,8 +11,8 @@ export function mount(container: HTMLElement): () => void {
   return mountModelTool<State>(
     {
       id: 'sign',
-      titleKey: 'tool.sign.title',
-      descKey: 'tool.sign.desc',
+      title: t('tool.sign.title'),
+      desc: t('tool.sign.desc'),
       defaults: { ...SIGN_DEFAULTS, font: 'russo' },
       build: (m, font, s) => signParts(m, font, s),
       fileName: (s) => `sign_${s.text.split('\n')[0]}`,

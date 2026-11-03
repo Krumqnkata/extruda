@@ -3,7 +3,7 @@ import { QR_DEFAULTS, qrParts, type QRParams } from '../core/models';
 import { t } from '../i18n';
 import { check, color, el, hint, range, section, segmented, select, text, type Ctl } from '../ui/form';
 import { mountModelTool } from '../ui/modelTool';
-import { fontOptions, styleOptions } from './keychain';
+import { fontOptions, styleOptions } from '../ui/options';
 
 type State = Omit<QRParams, 'content'> & {
   font: string;
@@ -30,8 +30,8 @@ export function mount(container: HTMLElement): () => void {
   return mountModelTool<State>(
     {
       id: 'qr',
-      titleKey: 'tool.qr.title',
-      descKey: 'tool.qr.desc',
+      title: t('tool.qr.title'),
+      desc: t('tool.qr.desc'),
       defaults: { ...rest, font: 'russo', kind: 'url', url: content, text: '', ssid: '', password: '', security: 'WPA' },
       privateKeys: ['password'],
       build: (m, font, s) => qrParts(m, font, { ...s, content: qrContent(s) }),

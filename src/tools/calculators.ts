@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-import { eSteps, filamentGrams, filamentMeters, flowRate, MATERIALS, printCost } from '../core/calc';
+import { eSteps, filamentGrams, filamentMeters, flowRate, MATERIALS, printCost, spoolRemaining } from '../core/calc';
 import { fmt, t } from '../i18n';
 import type { Key } from '../i18n/en';
 import { el, hint, number, persisted, save, select, text, type Ctl } from '../ui/form';
@@ -26,6 +26,9 @@ const DEFAULTS = {
   flow: 100,
   expected: 0.45,
   measured: 0.48,
+  spoolTotal: 1100,
+  spoolEmpty: 250,
+  spoolNeed: 120,
 };
 type State = typeof DEFAULTS;
 
@@ -65,6 +68,10 @@ export function mount(container: HTMLElement): () => void {
     set('steps', fmt(steps, 2));
     set('m92', t('c.estepsCmd', { cmd: `M92 E${steps.toFixed(2)} → M500` }));
     set('flow', `${fmt(flowRate(s.flow, s.expected, s.measured), 1)} %`);
+    const spool = spoolRemaining(s.spoolTotal, s.spoolEmpty, s.spoolNeed, s.diameter, density);
+    set('spoolLeft', `${fmt(spool.grams, 0)} ${t('u.g')} · ${fmt(spool.meters, 1)} ${t('u.m')}`);
+    set('spoolVerdict', spool.spare >= 0 ? t('c.enough', { g: fmt(spool.spare, 0) }) : t('c.short', { g: fmt(-spool.spare, 0) }));
+    results.get('spoolVerdict')?.classList.toggle('bad', spool.spare < 0);
     container.querySelectorAll('.unit.cur').forEach((u) => (u.textContent = s.currency));
   };
 
@@ -150,6 +157,16 @@ export function mount(container: HTMLElement): () => void {
             number(ctl, 'measured', t('c.measuredWall'), { unit: t('u.mm'), step: 0.01, min: 0.05 }),
           ),
           el('div', { class: 'results' }, row('c.newFlow', 'flow', true)),
+        ),
+        card(
+          'c.spool',
+          hint(t('c.spoolHint')),
+          fields(
+            number(ctl, 'spoolTotal', t('c.spoolTotal'), { unit: t('u.g'), min: 0 }),
+            number(ctl, 'spoolEmpty', t('c.spoolEmpty'), { unit: t('u.g'), min: 0 }),
+            number(ctl, 'spoolNeed', t('c.need'), { unit: t('u.g'), min: 0 }),
+          ),
+          el('div', { class: 'results' }, row('c.left', 'spoolLeft', true), el('p', { class: 'verdict' }, out('spoolVerdict'))),
         ),
       ),
     ),

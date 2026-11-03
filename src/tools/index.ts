@@ -2,20 +2,38 @@
 import type { Key } from '../i18n/en';
 import { icons } from '../ui/icons';
 
+export type Group = 'make' | 'models' | 'printer';
+
 export interface ToolEntry {
   id: string;
+  group: Group;
   icon: string;
   title: Key;
   desc: Key;
   load: () => Promise<{ mount(container: HTMLElement): () => void }>;
 }
 
+export const GROUPS: { id: Group; title: Key }[] = [
+  { id: 'make', title: 'group.make' },
+  { id: 'models', title: 'group.models' },
+  { id: 'printer', title: 'group.printer' },
+];
+
 // Tools load on demand so the home page stays light.
 export const TOOLS: ToolEntry[] = [
-  { id: 'keychain', icon: icons.keychain, title: 'tool.keychain.title', desc: 'tool.keychain.desc', load: () => import('./keychain') },
-  { id: 'sign', icon: icons.sign, title: 'tool.sign.title', desc: 'tool.sign.desc', load: () => import('./sign') },
-  { id: 'qr', icon: icons.qr, title: 'tool.qr.title', desc: 'tool.qr.desc', load: () => import('./qr') },
-  { id: 'lithophane', icon: icons.image, title: 'tool.lithophane.title', desc: 'tool.lithophane.desc', load: () => import('./lithophane') },
-  { id: 'calculators', icon: icons.calc, title: 'tool.calc.title', desc: 'tool.calc.desc', load: () => import('./calculators') },
-  { id: 'stl', icon: icons.cube, title: 'tool.stl.title', desc: 'tool.stl.desc', load: () => import('./stl-viewer') },
+  { id: 'keychain', group: 'make', icon: icons.keychain, title: 'tool.keychain.title', desc: 'tool.keychain.desc', load: () => import('./keychain') },
+  { id: 'logo', group: 'make', icon: icons.shape, title: 'tool.logo.title', desc: 'tool.logo.desc', load: () => import('./logo') },
+  { id: 'sign', group: 'make', icon: icons.sign, title: 'tool.sign.title', desc: 'tool.sign.desc', load: () => import('./sign') },
+  { id: 'qr', group: 'make', icon: icons.qr, title: 'tool.qr.title', desc: 'tool.qr.desc', load: () => import('./qr') },
+  { id: 'gridfinity', group: 'make', icon: icons.grid, title: 'tool.gridfinity.title', desc: 'tool.gridfinity.desc', load: () => import('./gridfinity') },
+  { id: 'box', group: 'make', icon: icons.box, title: 'tool.box.title', desc: 'tool.box.desc', load: () => import('./box') },
+  { id: 'cutter', group: 'make', icon: icons.cookie, title: 'tool.cutter.title', desc: 'tool.cutter.desc', load: () => import('./cutter') },
+  { id: 'stencil', group: 'make', icon: icons.stencil, title: 'tool.stencil.title', desc: 'tool.stencil.desc', load: () => import('./stencil') },
+  { id: 'lithophane', group: 'make', icon: icons.image, title: 'tool.lithophane.title', desc: 'tool.lithophane.desc', load: () => import('./lithophane') },
+  { id: 'models', group: 'models', icon: icons.sparkles, title: 'tool.models.title', desc: 'tool.models.desc', load: () => import('./gallery') },
+  { id: 'calculators', group: 'printer', icon: icons.calc, title: 'tool.calc.title', desc: 'tool.calc.desc', load: () => import('./calculators') },
+  { id: 'gcode', group: 'printer', icon: icons.code, title: 'tool.gcode.title', desc: 'tool.gcode.desc', load: () => import('./gcode') },
+  { id: 'calibration', group: 'printer', icon: icons.ruler, title: 'tool.calibration.title', desc: 'tool.calibration.desc', load: () => import('./calibration') },
+  { id: 'swatch', group: 'printer', icon: icons.swatch, title: 'tool.swatch.title', desc: 'tool.swatch.desc', load: () => import('./swatch') },
+  { id: 'stl', group: 'printer', icon: icons.cube, title: 'tool.stl.title', desc: 'tool.stl.desc', load: () => import('./stl-viewer') },
 ];
