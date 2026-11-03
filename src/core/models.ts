@@ -5,30 +5,36 @@ import type { Font } from 'opentype.js';
 import qrcode from 'qrcode-generator';
 import { toTriMesh } from './manifold';
 import type { Part } from './mesh';
+import { iconPolygons } from './shapes';
 import { centerShape, textToPolygons, type Polygon, type Vec2 } from './text';
 
 export type TextStyle = 'raised' | 'engraved' | 'inlay';
 
-const SEGMENTS = 48;
+export const SEGMENTS = 48;
 
-function signedArea(poly: Vec2[]): number {
+export function signedArea(poly: Vec2[]): number {
   let a = 0;
   for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) a += poly[j][0] * poly[i][1] - poly[i][0] * poly[j][1];
   return a / 2;
 }
 
 /** Drops the holes of a cross-section (e.g. the inside of an "O" in a keychain outline). */
-function fillHoles(m: ManifoldToplevel, cs: CrossSection): CrossSection {
+export function fillHoles(m: ManifoldToplevel, cs: CrossSection): CrossSection {
   const outer = cs.toPolygons().filter((p) => signedArea(p) > 0);
   return m.CrossSection.ofPolygons(outer, 'Positive');
 }
 
-function circle(m: ManifoldToplevel, r: number, x: number, y: number): CrossSection {
+/** An empty cross-section (Manifold rejects an empty polygon list). */
+export function emptyCS(m: ManifoldToplevel): CrossSection {
+  return m.CrossSection.square(1).intersect(m.CrossSection.square(1).translate([5, 0]));
+}
+
+export function circle(m: ManifoldToplevel, r: number, x: number, y: number): CrossSection {
   return m.CrossSection.circle(r, SEGMENTS).translate([x, y]);
 }
 
 /** Puts text on a base according to the chosen style and returns base + text parts. */
-function styledParts(
+export function styledParts(
   m: ManifoldToplevel,
   base2D: CrossSection,
   text2D: CrossSection,
@@ -82,6 +88,10 @@ export interface KeychainParams {
   holeDiameter: number;
   baseColor: string;
   textColor: string;
+  /** Built-in icon id, 'custom' for user artwork, or '' for none. */
+  icon: string;
+  iconSize: number; // mm tall; 0 = automatic
+  iconPosition: 'before' | 'after';
 }
 
 export const KEYCHAIN_DEFAULTS: KeychainParams = {
@@ -98,41 +108,77 @@ export const KEYCHAIN_DEFAULTS: KeychainParams = {
   holeDiameter: 5,
   baseColor: '#1f2937',
   textColor: '#ff7a1a',
+  icon: '',
+  iconSize: 0,
+  iconPosition: 'before',
 };
 
-export function keychainParts(m: ManifoldToplevel, font: Font, p: KeychainParams): Part[] {
+/** Artwork supplied by the caller, e.g. a parsed SVG: polygons with their fill rule. */
+export type Shape2D = { polygons: Polygon[]; fillRule: 'NonZero' | 'EvenOdd' | 'Positive' }[];
+
+export function shapeToCS(m: ManifoldToplevel, shape: Shape2D): CrossSection {
+  return m.CrossSection.union(shape.map((s) => m.CrossSection.ofPolygons(s.polygons, s.fillRule)));
+}
+
+/** Adds a key ring tab on one side of an outline and cuts its hole. */
+export function addRing(m: ManifoldToplevel, outline: CrossSection, ring: 'left' | 'top' | 'right' | 'none', ringDiameter: number, holeDiameter: number): CrossSection {
+  if (ring === 'none' || outline.isEmpty()) return outline;
+  const R = Math.max(ringDiameter / 2, holeDiameter / 2 + 1);
+  const r = Math.min(holeDiameter / 2, R - 0.8);
+  const b = outline.bounds();
+  let tab: CrossSection, anchor: CrossSection, hole: CrossSection;
+  if (ring === 'top') {
+    const cx = (b.min[0] + b.max[0]) / 2;
+    const cy = b.max[1] + R * 0.35;
+    tab = circle(m, R, cx, cy);
+    anchor = circle(m, R * 0.8, cx, b.max[1] - R);
+    hole = circle(m, r, cx, cy);
+  } else {
+    const side = ring === 'left' ? -1 : 1;
+    const edge = side < 0 ? b.min[0] : b.max[0];
+    const cy = (b.min[1] + b.max[1]) / 2;
+    const cx = edge - side * R * 0.35;
+    tab = circle(m, R, cx, cy);
+    anchor = circle(m, R * 0.8, edge + side * R, cy);
+    hole = circle(m, r, cx, cy);
+  }
+  return m.CrossSection.union(outline, m.CrossSection.hull([tab, anchor])).subtract(hole);
+}
+
+export function keychainParts(m: ManifoldToplevel, font: Font, p: KeychainParams, customIcon?: Shape2D): Part[] {
   const lines = p.text.trim();
-  if (!lines) return [];
-  const shape = centerShape(textToPolygons(font, lines, { height: p.height, spacing: p.spacing, align: 'center', lineHeight: 1.3 }));
-  if (!shape.polygons.length) return [];
   const { CrossSection } = m;
-  const text2D = CrossSection.ofPolygons(shape.polygons, 'NonZero');
+  let text2D = emptyCS(m);
+  if (lines) {
+    const shape = centerShape(textToPolygons(font, lines, { height: p.height, spacing: p.spacing, align: 'center', lineHeight: 1.3 }));
+    if (shape.polygons.length) text2D = CrossSection.ofPolygons(shape.polygons, 'NonZero');
+  }
+  if (p.icon) {
+    const size = p.iconSize > 0 ? p.iconSize : p.height * 1.4;
+    let icon = customIcon?.length
+      ? shapeToCS(m, customIcon)
+      : CrossSection.ofPolygons(iconPolygons(p.icon === 'custom' ? 'heart' : p.icon, size), 'NonZero');
+    if (!icon.isEmpty()) {
+      const ib = icon.bounds();
+      const k = size / Math.max(1e-6, ib.max[1] - ib.min[1]);
+      icon = icon.translate([-(ib.min[0] + ib.max[0]) / 2, -(ib.min[1] + ib.max[1]) / 2]).scale(k);
+      const iw = (ib.max[0] - ib.min[0]) * k;
+      const gap = Math.max(1.5, p.height * 0.25);
+      if (text2D.isEmpty()) text2D = icon;
+      else {
+        const tb = text2D.bounds();
+        const x = p.iconPosition === 'after' ? tb.max[0] + gap + iw / 2 : tb.min[0] - gap - iw / 2;
+        text2D = CrossSection.union(text2D, icon.translate([x, (tb.min[1] + tb.max[1]) / 2]));
+      }
+    }
+  }
   if (text2D.isEmpty()) return [];
   const closing = Math.max(0, p.smooth);
   let outline = text2D.offset(p.border + closing, 'Round', 2, SEGMENTS);
   if (closing > 0) outline = outline.offset(-closing, 'Round', 2, SEGMENTS);
   outline = fillHoles(m, outline);
 
-  if (p.ring !== 'none') {
-    const R = Math.max(p.ringDiameter / 2, p.holeDiameter / 2 + 1);
-    const r = Math.min(p.holeDiameter / 2, R - 0.8);
-    const b = outline.bounds();
-    let ring: CrossSection, anchor: CrossSection, hole: CrossSection;
-    if (p.ring === 'top') {
-      const cy = b.max[1] + R * 0.35;
-      ring = circle(m, R, 0, cy);
-      anchor = circle(m, R * 0.8, 0, b.max[1] - R);
-      hole = circle(m, r, 0, cy);
-    } else {
-      const side = p.ring === 'left' ? -1 : 1;
-      const edge = side < 0 ? b.min[0] : b.max[0];
-      const cx = edge - side * R * 0.35;
-      ring = circle(m, R, cx, 0);
-      anchor = circle(m, R * 0.8, edge + side * R, 0);
-      hole = circle(m, r, cx, 0);
-    }
-    outline = CrossSection.union(outline, CrossSection.hull([ring, anchor])).subtract(hole);
-  }
+  outline = addRing(m, outline, p.ring, p.ringDiameter, p.holeDiameter);
 
   return styledParts(m, outline, text2D, p);
 }
@@ -183,7 +229,7 @@ export const SIGN_DEFAULTS: SignParams = {
   textColor: '#0f172a',
 };
 
-function plateShape(m: ManifoldToplevel, shape: SignParams['shape'], w: number, h: number, corner: number): CrossSection {
+export function plateShape(m: ManifoldToplevel, shape: SignParams['shape'], w: number, h: number, corner: number): CrossSection {
   const { CrossSection } = m;
   if (shape === 'rect' || corner <= 0) return CrossSection.square([w, h], true);
   const r = shape === 'pill' ? Math.min(w, h) / 2 - 0.01 : Math.min(corner, Math.min(w, h) / 2 - 0.01);
@@ -193,7 +239,7 @@ function plateShape(m: ManifoldToplevel, shape: SignParams['shape'], w: number, 
 export function signParts(m: ManifoldToplevel, font: Font, p: SignParams): Part[] {
   const { CrossSection, Manifold } = m;
   const shape = centerShape(textToPolygons(font, p.text, { height: p.height, spacing: p.spacing, lineHeight: p.lineHeight, align: p.align }));
-  const text2D = shape.polygons.length ? CrossSection.ofPolygons(shape.polygons, 'NonZero') : CrossSection.ofPolygons([]);
+  const text2D = shape.polygons.length ? CrossSection.ofPolygons(shape.polygons, 'NonZero') : emptyCS(m);
 
   if (p.shape === 'none') {
     if (text2D.isEmpty()) return [];

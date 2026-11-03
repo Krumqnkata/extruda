@@ -91,3 +91,15 @@ export function estimateWeight(volumeMm3: number, areaMm2: number, density: numb
   const grams = ((shell + infill) / 1000) * density;
   return { shellCm3: shell / 1000, infillCm3: infill / 1000, grams };
 }
+
+export interface SpoolResult {
+  grams: number;
+  meters: number;
+  /** Grams left after the planned print; negative means it will run out. */
+  spare: number;
+}
+
+export function spoolRemaining(totalGrams: number, emptySpoolGrams: number, neededGrams: number, diameterMm: number, density: number): SpoolResult {
+  const grams = Math.max(0, totalGrams - emptySpoolGrams);
+  return { grams, meters: filamentMeters(grams, diameterMm, density), spare: grams - neededGrams };
+}

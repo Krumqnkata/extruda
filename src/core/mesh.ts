@@ -11,6 +11,8 @@ export interface Part {
   name: string;
   color: string;
   mesh: TriMesh;
+  /** Parts sharing a group form one object (e.g. a lid and its inlaid text); defaults to one object per part. */
+  group?: string;
 }
 
 export interface MeshStats {

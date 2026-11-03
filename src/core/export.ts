@@ -38,26 +38,44 @@ export function partsToSTL(parts: Part[], header?: string): Uint8Array {
 const xmlEscape = (s: string) => s.replace(/[<>&"']/g, (c) => `&#${c.charCodeAt(0)};`);
 const num = (n: number) => (Math.round(n * 1e5) / 1e5).toString();
 
+export interface ModelObject {
+  name: string;
+  parts: Part[];
+}
+
 /** One object made of several parts, which slicers such as Bambu Studio and PrusaSlicer load as a multi-part model. */
 export function to3MF(parts: Part[], title = 'Extruda model'): Uint8Array {
-  const objects: string[] = [];
-  const components: string[] = [];
-  parts.forEach((part, i) => {
-    const id = i + 1;
-    const p = part.mesh.positions;
-    const ix = part.mesh.indices;
-    const verts: string[] = [];
-    for (let v = 0; v < p.length; v += 3) verts.push(`<vertex x="${num(p[v])}" y="${num(p[v + 1])}" z="${num(p[v + 2])}"/>`);
-    const tris: string[] = [];
-    for (let t = 0; t < ix.length; t += 3) tris.push(`<triangle v1="${ix[t]}" v2="${ix[t + 1]}" v3="${ix[t + 2]}" pid="${parts.length + 2}" p1="${i}"/>`);
-    objects.push(
-      `<object id="${id}" name="${xmlEscape(part.name)}" type="model"><mesh><vertices>${verts.join('')}</vertices><triangles>${tris.join('')}</triangles></mesh></object>`,
-    );
-    components.push(`<component objectid="${id}"/>`);
-  });
-  const assemblyId = parts.length + 1;
-  const materialsId = parts.length + 2;
-  const materials = parts
+  return objectsTo3MF([{ name: title, parts }], title);
+}
+
+/** Several independent objects (e.g. a full build plate), each made of one or more coloured parts. */
+export function objectsTo3MF(models: ModelObject[], title = 'Extruda model'): Uint8Array {
+  const allParts = models.flatMap((o) => o.parts);
+  const materialsId = 1;
+  let nextId = 2;
+  let partIndex = 0;
+  const resources: string[] = [];
+  const items: string[] = [];
+  for (const model of models) {
+    const components: string[] = [];
+    for (const part of model.parts) {
+      const id = nextId++;
+      const p = part.mesh.positions;
+      const ix = part.mesh.indices;
+      const verts: string[] = [];
+      for (let v = 0; v < p.length; v += 3) verts.push(`<vertex x="${num(p[v])}" y="${num(p[v + 1])}" z="${num(p[v + 2])}"/>`);
+      const tris: string[] = [];
+      for (let t = 0; t < ix.length; t += 3) tris.push(`<triangle v1="${ix[t]}" v2="${ix[t + 1]}" v3="${ix[t + 2]}"/>`);
+      resources.push(
+        `<object id="${id}" name="${xmlEscape(part.name)}" type="model" pid="${materialsId}" pindex="${partIndex++}"><mesh><vertices>${verts.join('')}</vertices><triangles>${tris.join('')}</triangles></mesh></object>`,
+      );
+      components.push(`<component objectid="${id}"/>`);
+    }
+    const assemblyId = nextId++;
+    resources.push(`<object id="${assemblyId}" name="${xmlEscape(model.name)}" type="model"><components>${components.join('')}</components></object>`);
+    items.push(`<item objectid="${assemblyId}"/>`);
+  }
+  const materials = allParts
     .map((part) => `<base name="${xmlEscape(part.name)}" displaycolor="${part.color.toUpperCase()}FF"/>`)
     .join('');
   const model = `<?xml version="1.0" encoding="UTF-8"?>
@@ -66,10 +84,9 @@ export function to3MF(parts: Part[], title = 'Extruda model'): Uint8Array {
 <metadata name="Application">Extruda</metadata>
 <resources>
 <basematerials id="${materialsId}">${materials}</basematerials>
-${objects.join('\n')}
-<object id="${assemblyId}" name="${xmlEscape(title)}" type="model"><components>${components.join('')}</components></object>
+${resources.join('\n')}
 </resources>
-<build><item objectid="${assemblyId}"/></build>
+<build>${items.join('')}</build>
 </model>`;
   const contentTypes = `<?xml version="1.0" encoding="UTF-8"?>
 <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
