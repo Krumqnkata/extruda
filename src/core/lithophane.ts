@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Builds a closed lithophane mesh straight from a grayscale image (no CSG needed).
-import { signedVolume, flipWinding, type TriMesh } from './mesh';
+import { closedGrid } from './heightfield';
+import type { TriMesh } from './mesh';
 
 export interface LithoParams {
   width: number; // mm, image part only
@@ -67,18 +68,19 @@ export function lithophane(img: GrayImage, p: LithoParams): LithoResult {
   const nv = rows + 1;
   const N = nu * nv;
 
-  const positions = new Float32Array(N * 2 * 3);
   const thickness = new Float32Array(N * 2);
   const span = wrap ? Math.PI * 2 : (Math.min(Math.max(p.angle, 10), 300) * Math.PI) / 180;
   const R = W / span;
   const border = wrap ? 0 : p.border;
   const range = p.maxThickness - p.minThickness;
 
-  for (let j = 0; j < nv; j++) {
+  const mesh = closedGrid(nu, nv, wrap, (i, j, top, out, o) => {
+    const u = (i / cols) * W;
     const v = (j / rows) * H;
-    for (let i = 0; i < nu; i++) {
-      const u = (i / cols) * W;
-      let t = p.maxThickness;
+    const k = j * nu + i;
+    let t: number;
+    if (top) {
+      t = p.maxThickness;
       const iu = (u - border) / p.width;
       const iv = (v - p.border) / imgH;
       if (iu >= 0 && iu <= 1 && iv >= 0 && iv <= 1) {
@@ -86,62 +88,24 @@ export function lithophane(img: GrayImage, p: LithoParams): LithoResult {
         if (p.invert) g = 1 - g;
         t = p.minThickness + (1 - g) * range; // dark pixels are thick and block light
       }
-      const k = j * nu + i;
-      for (const [layer, depth] of [[0, t], [1, 0]] as const) {
-        let x: number, y: number;
-        if (p.shape === 'flat') {
-          x = u - W / 2;
-          y = depth;
-        } else {
-          const a = (u / W - 0.5) * span;
-          const r = R + depth;
-          x = r * Math.sin(a);
-          y = r * Math.cos(a) - R;
-        }
-        const o = (layer * N + k) * 3;
-        positions[o] = x;
-        positions[o + 1] = y;
-        positions[o + 2] = v;
-        thickness[layer * N + k] = t;
-      }
+      thickness[k] = t;
+    } else {
+      t = thickness[k]; // the top of this sample was placed first
+      thickness[N + k] = t;
     }
-  }
-
-  const cellsU = wrap ? nu : nu - 1;
-  const cellCount = cellsU * rows;
-  const boundary: number[] = [];
-  if (wrap) {
-    // Only the bottom and top rims need walls; they run in opposite directions.
-    for (let i = 0; i < nu; i++) boundary.push(i, (i + 1) % nu);
-    for (let i = nu - 1; i >= 0; i--) boundary.push(rows * nu + ((i + 1) % nu), rows * nu + i);
-  } else {
-    // Counter-clockwise loop around the grid so each wall faces outwards.
-    for (let i = 0; i < nu - 1; i++) boundary.push(i, i + 1);
-    for (let j = 0; j < rows; j++) boundary.push(j * nu + nu - 1, (j + 1) * nu + nu - 1);
-    for (let i = nu - 1; i > 0; i--) boundary.push(rows * nu + i, rows * nu + i - 1);
-    for (let j = rows; j > 0; j--) boundary.push(j * nu, (j - 1) * nu);
-  }
-  const indices = new Uint32Array((cellCount * 4 + boundary.length) * 3);
-  let o = 0;
-  for (let j = 0; j < rows; j++) {
-    for (let i = 0; i < cellsU; i++) {
-      const a = j * nu + i;
-      const b = j * nu + ((i + 1) % nu);
-      const c = (j + 1) * nu + ((i + 1) % nu);
-      const d = (j + 1) * nu + i;
-      indices.set([a, b, c, a, c, d], o);
-      indices.set([a + N, c + N, b + N, a + N, d + N, c + N], o + 6);
-      o += 12;
+    const depth = top ? t : 0;
+    if (p.shape === 'flat') {
+      out[o] = u - W / 2;
+      out[o + 1] = depth;
+    } else {
+      const a = (u / W - 0.5) * span;
+      const r = R + depth;
+      out[o] = r * Math.sin(a);
+      out[o + 1] = r * Math.cos(a) - R;
     }
-  }
-  for (let e = 0; e < boundary.length; e += 2) {
-    const P = boundary[e], Q = boundary[e + 1];
-    indices.set([P + N, Q + N, Q, P + N, Q, P], o);
-    o += 6;
-  }
+    out[o + 2] = v;
+  });
 
-  const mesh: TriMesh = { positions, indices };
-  if (signedVolume(mesh) < 0) flipWinding(mesh);
   return { mesh, thickness, size: [W, H] };
 }
 

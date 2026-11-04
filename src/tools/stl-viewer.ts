@@ -1,10 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-import * as THREE from 'three';
-import { ThreeMFLoader } from 'three/examples/jsm/loaders/3MFLoader.js';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 import { estimateWeight, filamentMeters, MATERIALS } from '../core/calc';
-import { meshStats, mergeMeshes, type MeshStats, type TriMesh } from '../core/mesh';
+import { parseFile } from '../core/loadMesh';
+import { meshStats, type MeshStats, type TriMesh } from '../core/mesh';
 import { Viewer } from '../core/viewer';
 import { fmt, t } from '../i18n';
 import type { Key } from '../i18n/en';
@@ -17,30 +14,6 @@ type State = typeof DEFAULTS;
 
 // Keeps the last opened model while switching pages or language.
 let loaded: { name: string; mesh: TriMesh } | undefined;
-
-function objectToMesh(root: THREE.Object3D): TriMesh {
-  root.updateMatrixWorld(true);
-  const meshes: TriMesh[] = [];
-  root.traverse((o) => {
-    const m = o as THREE.Mesh;
-    if (!m.isMesh) return;
-    const geo = m.geometry.index ? m.geometry.toNonIndexed() : m.geometry.clone();
-    geo.applyMatrix4(m.matrixWorld);
-    const positions = new Float32Array(geo.getAttribute('position').array);
-    meshes.push({ positions, indices: Uint32Array.from({ length: positions.length / 3 }, (_, i) => i) });
-    geo.dispose();
-  });
-  return mergeMeshes(meshes);
-}
-
-async function parseFile(file: File): Promise<TriMesh> {
-  const buf = await file.arrayBuffer();
-  const ext = file.name.split('.').pop()?.toLowerCase();
-  if (ext === '3mf') return objectToMesh(new ThreeMFLoader().parse(buf));
-  if (ext === 'obj') return objectToMesh(new OBJLoader().parse(new TextDecoder().decode(buf)));
-  const geo = new STLLoader().parse(buf);
-  return objectToMesh(new THREE.Mesh(geo));
-}
 
 /** Hands the estimated grams to the cost and spool calculators. */
 function toCalculators(grams: number): void {
