@@ -4,7 +4,7 @@ import { fmt, t } from '../i18n';
 import type { Key } from '../i18n/en';
 import { el, hint, number, persisted, save, select, text, type Ctl } from '../ui/form';
 
-const DEFAULTS = {
+export const CALC_DEFAULTS = {
   currency: '€',
   grams: 45,
   pricePerKg: 20,
@@ -30,10 +30,10 @@ const DEFAULTS = {
   spoolEmpty: 250,
   spoolNeed: 120,
 };
-type State = typeof DEFAULTS;
+type State = typeof CALC_DEFAULTS;
 
 export function mount(container: HTMLElement): () => void {
-  const state = persisted('calc', DEFAULTS);
+  const state = persisted('calc', CALC_DEFAULTS);
   const results = new Map<string, HTMLElement>();
   const out = (id: string) => {
     const e = el('output', { class: 'result-value' });

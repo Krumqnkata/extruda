@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { describe, expect, it } from 'vitest';
-import { eSteps, estimateWeight, filamentGrams, filamentMeters, flowRate, printCost } from '../src/core/calc';
+import { eSteps, estimateWeight, filamentGrams, filamentMeters, flowRate, printCost, quoteTotals } from '../src/core/calc';
 
 describe('calculators', () => {
   it('prices a print', () => {
@@ -32,6 +32,14 @@ describe('calculators', () => {
   it('calibrates E-steps and flow', () => {
     expect(eSteps(93, 100, 98)).toBeCloseTo(94.898, 3);
     expect(flowRate(100, 0.45, 0.5)).toBeCloseTo(90);
+  });
+
+  it('adds up a quote: discount first, then VAT', () => {
+    const r = quoteTotals([{ desc: 'A', qty: 2, price: 10 }, { desc: 'B', qty: 1, price: 5 }], 10, 20);
+    expect(r.subtotal).toBeCloseTo(25);
+    expect(r.discount).toBeCloseTo(2.5);
+    expect(r.vat).toBeCloseTo(4.5);
+    expect(r.total).toBeCloseTo(27);
   });
 
   it('estimates weight from shell and infill', () => {

@@ -48,9 +48,10 @@ download an STL or a multi-colour 3MF.
 
 ### Ready-made models
 
-A gallery of 12 everyday prints you personalise in seconds: phone & tablet stand, cable organizer, pen cup with a name
-wrapped around it, desk name plate with stand, wall hook, plant pot with saucer, door wedge, coaster, bookmark,
-gift tag, Christmas ornament and a two-sided pet ID tag.
+A gallery of everyday prints you personalise in seconds: a dual-name illusion that reads one name from the front and
+another from the side, rings and bracelets with a name, a perpetual desk calendar, phone & tablet stand, cable organizer,
+pen cup with a name wrapped around it, desk name plate with stand, wall hook, plant pot with saucer, door wedge, coaster,
+bookmark, gift tag, Christmas ornament, a two-sided pet ID tag, a print-in-place hinge and a snap-fit clip.
 
 ### Printer tools
 
@@ -60,6 +61,8 @@ gift tag, Christmas ornament and a two-sided pet ID tag.
 | 📏 | **Calibration prints** | Print-in-place tolerance test, overhang test and bridging test, each with its values printed on it. |
 | 🏷️ | **Filament swatches** | Labelled sample cards with a 0.4–2.0 mm thickness staircase; a whole list goes onto one plate. |
 | 🧮 | **Calculators** | Print cost & price, filament weight ↔ length, filament left on a spool, E-steps and flow calibration. |
+| 📖 | **Guide & troubleshooting** | Typical settings per material and fixes for common print problems, with search. |
+| 🧾 | **Customer quote** | A quote with your logo and prices, saved as PDF from the browser. Not a tax invoice. |
 | 📐 | **STL analyzer** | Open STL, 3MF or OBJ for size, volume, estimated weight and cost, then send the grams to the calculators. |
 
 <table>
@@ -142,9 +145,10 @@ WebAssembly, а ти сваляш STL или многоцветен 3MF.
 
 ### Готови модели
 
-Галерия с 12 полезни предмета, които персонализираш за секунди: стойка за телефон и таблет, органайзер за кабели,
-чаша за моливи с име, табелка с име за бюро, кукичка за стена, саксия с подложка, клин за врата, подложка за чаша,
-отметка за книга, етикет за подарък, коледна играчка и двустранен медальон за домашен любимец.
+Галерия с полезни предмети, които персонализираш за секунди: двойна илюзия, която отпред чете едно име, а отстрани друго,
+пръстени и гривни с име, вечен календар за бюро, стойка за телефон и таблет, органайзер за кабели, чаша за моливи с име,
+табелка с име за бюро, кукичка за стена, саксия с подложка, клин за врата, подложка за чаша, отметка за книга,
+етикет за подарък, коледна играчка, двустранен медальон за домашен любимец, панта, принтирана наведнъж, и щракаща закопчалка.
 
 ### Инструменти за принтера
 
@@ -154,6 +158,8 @@ WebAssembly, а ти сваляш STL или многоцветен 3MF.
 | 📏 | **Калибрационни тестове** | Тест за хлабина (принтира се наведнъж), за надвес и за мостове, с отпечатани стойности. |
 | 🏷️ | **Мостри на филамент** | Надписани мостри със стъпала 0,4–2,0 мм; цял списък на една плоча. |
 | 🧮 | **Калкулатори** | Цена на принт, тегло ↔ дължина, оставащ филамент на масура, E-steps и flow. |
+| 📖 | **Справочник и проблеми** | Типични настройки за всеки материал и решения за честите проблеми, с търсене. |
+| 🧾 | **Оферта за клиент** | Оферта с твоето лого и цени, запазена като PDF от браузъра. Не е данъчна фактура. |
 | 📐 | **STL анализатор** | Размери, обем, тегло и цена за STL, 3MF или OBJ, с прехвърляне към калкулаторите. |
 
 ### Защо е удобно

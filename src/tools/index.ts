@@ -2,7 +2,7 @@
 import type { Key } from '../i18n/en';
 import { icons } from '../ui/icons';
 
-export type Group = 'make' | 'models' | 'printer';
+export type Group = 'make' | 'models' | 'parts' | 'printer';
 
 export interface ToolEntry {
   id: string;
@@ -10,12 +10,15 @@ export interface ToolEntry {
   icon: string;
   title: Key;
   desc: Key;
+  /** Hash route when it differs from the id, e.g. a model inside the gallery. */
+  route?: string;
   load: () => Promise<{ mount(container: HTMLElement): () => void }>;
 }
 
 export const GROUPS: { id: Group; title: Key }[] = [
   { id: 'make', title: 'group.make' },
   { id: 'models', title: 'group.models' },
+  { id: 'parts', title: 'group.parts' },
   { id: 'printer', title: 'group.printer' },
 ];
 
@@ -31,9 +34,13 @@ export const TOOLS: ToolEntry[] = [
   { id: 'stencil', group: 'make', icon: icons.stencil, title: 'tool.stencil.title', desc: 'tool.stencil.desc', load: () => import('./stencil') },
   { id: 'lithophane', group: 'make', icon: icons.image, title: 'tool.lithophane.title', desc: 'tool.lithophane.desc', load: () => import('./lithophane') },
   { id: 'models', group: 'models', icon: icons.sparkles, title: 'tool.models.title', desc: 'tool.models.desc', load: () => import('./gallery') },
+  { id: 'hinge', group: 'parts', route: 'models/hinge', icon: icons.hinge, title: 'tool.hinge.title', desc: 'tool.hinge.desc', load: () => import('./gallery') },
+  { id: 'snap-fit', group: 'parts', route: 'models/snap-fit', icon: icons.snap, title: 'tool.snap.title', desc: 'tool.snap.desc', load: () => import('./gallery') },
   { id: 'calculators', group: 'printer', icon: icons.calc, title: 'tool.calc.title', desc: 'tool.calc.desc', load: () => import('./calculators') },
   { id: 'gcode', group: 'printer', icon: icons.code, title: 'tool.gcode.title', desc: 'tool.gcode.desc', load: () => import('./gcode') },
   { id: 'calibration', group: 'printer', icon: icons.ruler, title: 'tool.calibration.title', desc: 'tool.calibration.desc', load: () => import('./calibration') },
   { id: 'swatch', group: 'printer', icon: icons.swatch, title: 'tool.swatch.title', desc: 'tool.swatch.desc', load: () => import('./swatch') },
+  { id: 'guide', group: 'printer', icon: icons.book, title: 'tool.guide.title', desc: 'tool.guide.desc', load: () => import('./guide') },
+  { id: 'quote', group: 'printer', icon: icons.quote, title: 'tool.quote.title', desc: 'tool.quote.desc', load: () => import('./quote') },
   { id: 'stl', group: 'printer', icon: icons.cube, title: 'tool.stl.title', desc: 'tool.stl.desc', load: () => import('./stl-viewer') },
 ];

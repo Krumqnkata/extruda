@@ -386,6 +386,16 @@ export const en = {
   'm.cat.holiday': "Holidays",
   'm.empty': "No model matches your search.",
   'm.back': "All models",
+  'group.parts': "Parts",
+  'm.cat.parts': "Parts",
+  'tool.hinge.title': "Print-in-place hinge",
+  'tool.hinge.desc': "A hinge that comes off the printer already assembled, with clearance you can tune.",
+  'tool.snap.title': "Snap-fit clip",
+  'tool.snap.desc': "A clip with flexible arms that clicks into a matching plate.",
+  'tool.guide.title': "Guide & troubleshooting",
+  'tool.guide.desc': "Typical settings for each material and fixes for common print problems.",
+  'tool.quote.title': "Customer quote",
+  'tool.quote.desc': "A clean quote with your logo and prices, saved as PDF from the browser.",
   'notfound': 'Page not found.',
 };
 

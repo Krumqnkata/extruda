@@ -18,7 +18,7 @@ npm run typecheck
   New generators belong here so they can be unit-tested.
 - `src/tools/` — one file per page. Register new tools in `src/tools/index.ts`.
 - `src/i18n/` — every user-facing string, in `en.ts` and `bg.ts`. Add both.
-- `src/models/` — the ready-made models gallery. **Adding a model is one entry** in `desk.ts`, `home.ts` or `gifts.ts`:
+- `src/models/` — the ready-made models gallery. **Adding a model is one entry** in `desk.ts`, `home.ts`, `gifts.ts`, `personal.ts` or `parts.ts`:
   labels as `['English', 'Български']` pairs, a parameter list and a `build()` function. The gallery page and
   `tests/gallery.test.ts` pick it up automatically.
 - `tests/` — Vitest. Generated meshes should stay watertight; see `isWatertight` in `tests/helpers.ts`.

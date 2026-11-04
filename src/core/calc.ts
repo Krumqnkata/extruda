@@ -103,3 +103,24 @@ export function spoolRemaining(totalGrams: number, emptySpoolGrams: number, need
   const grams = Math.max(0, totalGrams - emptySpoolGrams);
   return { grams, meters: filamentMeters(grams, diameterMm, density), spare: grams - neededGrams };
 }
+
+export interface QuoteRow {
+  desc: string;
+  qty: number;
+  price: number;
+}
+
+export interface QuoteTotals {
+  subtotal: number;
+  discount: number;
+  vat: number;
+  total: number;
+}
+
+/** The discount comes off first, then VAT is added on what is left. */
+export function quoteTotals(rows: QuoteRow[], discountPercent: number, vatPercent: number): QuoteTotals {
+  const subtotal = rows.reduce((sum, r) => sum + r.qty * r.price, 0);
+  const discount = subtotal * (discountPercent / 100);
+  const vat = (subtotal - discount) * (vatPercent / 100);
+  return { subtotal, discount, vat, total: subtotal - discount + vat };
+}

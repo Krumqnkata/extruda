@@ -41,29 +41,38 @@ const main = el('main', { id: 'main' });
 
 const currentRoute = () => parseHash(location.hash).path.split('/')[0];
 
-function navLink(tool: ToolEntry, route: string): HTMLElement {
+const toolPath = (tool: ToolEntry) => tool.route ?? tool.id;
+
+/** A model page lights up its own entry if it has one, otherwise the gallery. */
+function isActive(tool: ToolEntry, path: string): boolean {
+  if (path === toolPath(tool)) return true;
+  return tool.id === 'models' && path.startsWith('models/') && !TOOLS.some((x) => toolPath(x) === path);
+}
+
+function navLink(tool: ToolEntry, path: string): HTMLElement {
+  const active = isActive(tool, path);
   return el(
     'a',
-    { href: `#/${tool.id}`, class: route === tool.id ? 'active' : '', 'aria-current': route === tool.id ? 'page' : null },
+    { href: `#/${toolPath(tool)}`, class: active ? 'active' : '', 'aria-current': active ? 'page' : null },
     el('span', { class: 'icon', html: tool.icon, 'aria-hidden': 'true' }),
     el('span', {}, t(tool.title)),
   );
 }
 
 function header(): HTMLElement {
-  const route = currentRoute();
+  const path = parseHash(location.hash).path;
   const nav = el(
     'nav',
     { class: 'nav', 'aria-label': t('home.tools') },
     ...GROUPS.map((g) => {
       const tools = TOOLS.filter((x) => x.group === g.id);
-      if (tools.length === 1) return navLink(tools[0], route);
-      const active = tools.some((x) => x.id === route);
+      if (tools.length === 1) return navLink(tools[0], path);
+      const active = tools.some((x) => isActive(x, path));
       return el(
         'details',
         { class: active ? 'nav-group active' : 'nav-group' },
         el('summary', {}, t(g.title), el('span', { class: 'icon chevron', html: icons.chevron, 'aria-hidden': 'true' })),
-        el('div', { class: 'nav-menu' }, ...tools.map((x) => navLink(x, route))),
+        el('div', { class: 'nav-menu' }, ...tools.map((x) => navLink(x, path))),
       );
     }),
   );
@@ -149,7 +158,7 @@ function home(container: HTMLElement): void {
           'div',
           { class: 'cards' },
           ...TOOLS.filter((tool) => tool.group === g.id).map((tool) =>
-            el('a', { class: 'card tool-card', href: `#/${tool.id}` },
+            el('a', { class: 'card tool-card', href: `#/${toolPath(tool)}` },
               el('span', { class: 'icon badge', html: tool.icon, 'aria-hidden': 'true' }),
               el('h3', {}, t(tool.title)),
               el('p', {}, t(tool.desc)),
