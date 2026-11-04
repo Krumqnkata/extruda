@@ -14,9 +14,10 @@ export type Param =
   | { key: string; label: Pair; type: 'text'; multiline?: boolean }
   | { key: string; label: Pair; type: 'select'; options: readonly (readonly [string, Pair])[] }
   | { key: string; label: Pair; type: 'check' | 'color' | 'font' }
-  | { section: Pair };
+  | { section: Pair }
+  | { hint: Pair };
 
-export type Category = 'desk' | 'home' | 'gifts' | 'pets' | 'holiday';
+export type Category = 'desk' | 'home' | 'gifts' | 'pets' | 'holiday' | 'parts';
 
 export interface GalleryModel {
   id: string;

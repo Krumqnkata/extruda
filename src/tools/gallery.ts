@@ -5,7 +5,7 @@ import { t, tr } from '../i18n';
 import type { Key } from '../i18n/en';
 import { CATEGORIES, findModel, GALLERY } from '../models';
 import type { Category, GalleryModel, Param, Values } from '../models/types';
-import { check, color, el, range, section, select, text, type Ctl } from '../ui/form';
+import { check, color, el, hint, range, section, select, text, type Ctl } from '../ui/form';
 import { icons } from '../ui/icons';
 import { mountModelTool } from '../ui/modelTool';
 import { fontOptions } from '../ui/options';
@@ -29,6 +29,10 @@ function paramControls(model: GalleryModel, ctl: Ctl<State>): Node[] {
     if ('section' in p) {
       flush();
       title = tr(p.section);
+      continue;
+    }
+    if ('hint' in p) {
+      fields.push(hint(tr(p.hint)));
       continue;
     }
     const label = tr(p.label);
