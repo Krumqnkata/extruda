@@ -45,6 +45,7 @@ export const icons = {
   swap: svg('<path d="M4 8h13l-3-3M20 16H7l3 3"/>'),
   rotate: svg('<path d="M20 12a8 8 0 1 1-2.3-5.7L20 8.6"/><path d="M20 3.5v5.1h-5"/>'),
   cut: svg('<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="m8.2 8.2 11.8 11.8M8.2 15.8 20 4"/>'),
+  spool: svg('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M12 3a9 9 0 0 1 9 9M12 6.5a5.5 5.5 0 0 1 5.5 5.5"/>'),
   chevron: svg('<path d="m6 9 6 6 6-6"/>'),
   arrow: svg('<path d="M5 12h14m-5-5 5 5-5 5"/>'),
 };

@@ -81,6 +81,7 @@ bookmark, gift tag, Christmas ornament and a two-sided pet ID tag.
 | 📏 | **Calibration prints** | Print-in-place tolerance test, overhang test and bridging test, each with its values printed on it. |
 | 🏷️ | **Filament swatches** | Labelled sample cards with a 0.4–2.0 mm thickness staircase; a whole list goes onto one plate. |
 | 🧮 | **Calculators** | Print cost & price, filament weight ↔ length, filament left on a spool, E-steps and flow calibration. |
+| 🧵 | **Filament stock & log** | Your spools, what is left on each and what every print used and cost. Stored only in your browser, with backup export. |
 | 📖 | **Guide & troubleshooting** | Typical settings per material and fixes for common print problems, with search. |
 | 🧾 | **Customer quote** | A quote with your logo and prices, saved as PDF from the browser. Not a tax invoice. |
 
@@ -197,6 +198,7 @@ WebAssembly, а ти сваляш STL или многоцветен 3MF.
 | 📏 | **Калибрационни тестове** | Тест за хлабина (принтира се наведнъж), за надвес и за мостове, с отпечатани стойности. |
 | 🏷️ | **Мостри на филамент** | Надписани мостри със стъпала 0,4–2,0 мм; цял списък на една плоча. |
 | 🧮 | **Калкулатори** | Цена на принт, тегло ↔ дължина, оставащ филамент на масура, E-steps и flow. |
+| 🧵 | **Склад за филамент и дневник** | Масурите ти, колко е останало на всяка и какво е струвал всеки принт. Пази се само в браузъра, с резервно копие. |
 | 📖 | **Справочник и проблеми** | Типични настройки за всеки материал и решения за честите проблеми, с търсене. |
 | 🧾 | **Оферта за клиент** | Оферта с твоето лого и цени, запазена като PDF от браузъра. Не е данъчна фактура. |
 

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { estimateWeight, filamentMeters, MATERIALS } from '../core/calc';
+import { PENDING_KEY } from '../core/inventory';
 import { parseFile } from '../core/loadMesh';
 import { meshStats, type MeshStats, type TriMesh } from '../core/mesh';
 import { Viewer } from '../core/viewer';
@@ -26,6 +27,16 @@ function toCalculators(grams: number): void {
     /* storage unavailable: the calculators open with their own values */
   }
   location.hash = '#/calculators';
+}
+
+/** Opens the filament stock with this print filled in, ready to take off a spool. */
+function toInventory(grams: number, name: string): void {
+  try {
+    localStorage.setItem(PENDING_KEY, JSON.stringify({ grams: Math.round(grams * 10) / 10, name: name.replace(/\.[^.]+$/, '') }));
+  } catch {
+    /* storage unavailable: the page opens with an empty form */
+  }
+  location.hash = '#/inventory';
 }
 
 export function mount(container: HTMLElement): () => void {
@@ -60,7 +71,12 @@ export function mount(container: HTMLElement): () => void {
       row('stl.length', `${fmt(filamentMeters(w.grams, 1.75, density), 2)} ${t('u.m')}`),
       row('stl.cost', `${fmt((w.grams / 1000) * state.pricePerKg, 2)} ${state.currency}`, true),
       hint(t('stl.estimateHint')),
-      el('button', { type: 'button', class: 'btn', onclick: () => toCalculators(w.grams) }, el('span', { class: 'icon', html: icons.calc }), t('stl.toCalc')),
+      el(
+        'div',
+        { class: 'row' },
+        el('button', { type: 'button', class: 'btn', onclick: () => toCalculators(w.grams) }, el('span', { class: 'icon', html: icons.calc }), t('stl.toCalc')),
+        el('button', { type: 'button', class: 'btn', onclick: () => toInventory(w.grams, loaded?.name ?? '') }, el('span', { class: 'icon', html: icons.spool }), t('stl.toInventory')),
+      ),
     );
   };
 

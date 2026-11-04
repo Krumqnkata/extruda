@@ -415,6 +415,9 @@ export const en = {
   'tool.meshorient.desc': "Suggests how to lay a model on the bed so it needs the least support.",
   'tool.meshcut.title': "Cut to fit the bed",
   'tool.meshcut.desc': "Splits a model too big for your printer into pieces with dowels for joining.",
+  'tool.inventory.title': "Filament stock & log",
+  'tool.inventory.desc': "Track your spools, what is left on each and what every print used and cost.",
+  'stl.toInventory': "Take off a spool",
   'notfound': 'Page not found.',
 };
 

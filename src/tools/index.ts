@@ -50,6 +50,7 @@ export const TOOLS: ToolEntry[] = [
   { id: 'gcode', group: 'printer', icon: icons.code, title: 'tool.gcode.title', desc: 'tool.gcode.desc', load: () => import('./gcode') },
   { id: 'calibration', group: 'printer', icon: icons.ruler, title: 'tool.calibration.title', desc: 'tool.calibration.desc', load: () => import('./calibration') },
   { id: 'swatch', group: 'printer', icon: icons.swatch, title: 'tool.swatch.title', desc: 'tool.swatch.desc', load: () => import('./swatch') },
+  { id: 'inventory', group: 'printer', icon: icons.spool, title: 'tool.inventory.title', desc: 'tool.inventory.desc', load: () => import('./inventory') },
   { id: 'guide', group: 'printer', icon: icons.book, title: 'tool.guide.title', desc: 'tool.guide.desc', load: () => import('./guide') },
   { id: 'quote', group: 'printer', icon: icons.quote, title: 'tool.quote.title', desc: 'tool.quote.desc', load: () => import('./quote') },
 ];
