@@ -971,6 +971,18 @@ input[type='range'] {
   padding: 0 10px;
   font-size: 13px;
 }
+.art-filament {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.change-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
 .back-link {
   display: inline-block;
   margin-bottom: 8px;

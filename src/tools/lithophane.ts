@@ -15,7 +15,7 @@ const MAX_PIXELS = 1200;
 // The picture survives switching tools or language, but is never written to storage.
 let picture: { name: string; source: CanvasImageSource; width: number; height: number } | undefined;
 
-function demoPicture(): HTMLCanvasElement {
+export function demoPicture(): HTMLCanvasElement {
   const c = document.createElement('canvas');
   c.width = 480;
   c.height = 320;

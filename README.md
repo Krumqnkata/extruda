@@ -45,6 +45,8 @@ download an STL or a multi-colour 3MF.
 | 🍪 | **Cookie cutter & stamp** | Cutters from text, icons, SVG or PNG with a thin cutting edge and grip rim, plus a matching embossing stamp. |
 | ✂️ | **Stencil** | Text or artwork cut out of a plate, with automatic bridges so the middles of O, A, P and B stay in place. |
 | 🖼️ | **Lithophane** | Flat, curved or cylindrical lithophanes from any photo, with a back-lit preview. |
+| 🎨 | **Filament art** | A photo in shades of colour from a few filament swaps, with an estimated preview and the heights to change at. |
+| 🏔️ | **3D map** | Real terrain of any area. The only tool that uses the internet: it asks for the chosen area from a public elevation service, and only when you press the button. |
 
 ### Ready-made models
 
@@ -102,7 +104,7 @@ bookmark, gift tag, Christmas ornament and a two-sided pet ID tag.
 
 ### Why it's nice
 
-- **Private by design** – nothing you type or open leaves your device.
+- **Private by design** – nothing you type or open leaves your device. The one exception is the 3D map, which says so on the page.
 - **Watertight models** – built with the [Manifold](https://github.com/elalish/manifold) geometry kernel, so slicers never complain about holes or self-intersections.
 - **Multi-colour ready** – the 3MF keeps text and base as separate parts, so Bambu Studio, OrcaSlicer and PrusaSlicer can assign a filament to each (AMS / MMU / colour swap).
 - **Cyrillic and Latin** – every bundled font writes *Иван* as well as *Ivan*.
@@ -162,6 +164,8 @@ WebAssembly, а ти сваляш STL или многоцветен 3MF.
 | 🍪 | **Калъп за сладки и печат** | Калъпи от текст, иконка, SVG или PNG с тънък режещ ръб и ръб за хващане, плюс печат за релеф. |
 | ✂️ | **Шаблон (стенцил)** | Текст или рисунка, изрязани от плочка, с автоматични мостчета, за да не падат средите на О, А, Р и Б. |
 | 🖼️ | **Литофан** | Плосък, извит или цилиндричен литофан от снимка с преглед „на светлина“. |
+| 🎨 | **Картина от филамент** | Снимка в нюанси само с няколко смени на филамента, с приблизителен преглед и височините за смяна. |
+| 🏔️ | **3D карта** | Истинският релеф на всяка област. Единственият инструмент, който ползва интернет: изисква избраната област от публична услуга и то само когато натиснеш бутона. |
 
 ### Готови модели
 
@@ -204,7 +208,7 @@ WebAssembly, а ти сваляш STL или многоцветен 3MF.
 
 ### Защо е удобно
 
-- **Поверителност** – нищо, което пишеш или отваряш, не напуска устройството ти.
+- **Поверителност** – нищо, което пишеш или отваряш, не напуска устройството ти. Единственото изключение е 3D картата и това пише на страницата ѝ.
 - **Затворени (watertight) модели** – геометрията се строи с [Manifold](https://github.com/elalish/manifold), така че слайсърът няма да се оплаква от дупки.
 - **Готово за многоцветен печат** – в 3MF файла текстът и основата са отделни части – за AMS, MMU или смяна на филамент.
 - **Кирилица и латиница** – всички шрифтове пишат *Иван* толкова добре, колкото и *Ivan*.

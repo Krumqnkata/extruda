@@ -28,6 +28,13 @@ generate are yours: print them, share them or sell them without restriction.
 The Apache-2.0 license of Manifold is compatible with GPLv3/AGPLv3.
 "QR Code" is a registered trademark of DENSO WAVE INCORPORATED.
 
+## Terrain data
+
+The 3D map tool downloads [Terrain Tiles](https://registry.opendata.aws/terrain-tiles/) by Mapzen, hosted by Amazon
+Web Services, only when the user asks. Sources include SRTM, GMTED2010 and 3DEP, courtesy of the U.S. Geological
+Survey, and ETOPO1 from NOAA. See the [full list of sources and licences](https://github.com/tilezen/joerd/blob/master/docs/attribution.md).
+Not for navigation.
+
 ## Fonts
 
 All bundled fonts live in [`public/fonts`](public/fonts) and are licensed under the

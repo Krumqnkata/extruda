@@ -5,7 +5,7 @@ export const en = {
   'nav.menu': 'Menu',
   'theme.toggle': 'Toggle light/dark theme',
   'lang.switch': 'Български',
-  'footer.private': 'Everything runs in your browser. Your files and texts never leave your device.',
+  'footer.private': 'Everything runs in your browser. Your files and texts never leave your device. Only the 3D map downloads data, when you ask.',
   'footer.license': 'Licensed under AGPL-3.0',
   'footer.source': 'Source code',
   'footer.yours': 'Models you create are yours to print, share and sell.',
@@ -418,6 +418,10 @@ export const en = {
   'tool.inventory.title': "Filament stock & log",
   'tool.inventory.desc': "Track your spools, what is left on each and what every print used and cost.",
   'stl.toInventory': "Take off a spool",
+  'tool.filamentart.title': "Filament art",
+  'tool.filamentart.desc': "A photo in shades of colour from a few filament swaps, with the heights to change at.",
+  'tool.terrain.title': "3D map",
+  'tool.terrain.desc': "Real terrain of a mountain or any area, as a printable relief. Downloads map data when you ask.",
   'notfound': 'Page not found.',
 };
 

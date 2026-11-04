@@ -35,7 +35,7 @@ export interface GrayImage {
 
 export const MAX_SAMPLES = 400_000;
 
-function sample(img: GrayImage, u: number, v: number): number {
+export function sample(img: GrayImage, u: number, v: number): number {
   // Bilinear sample with u, v in [0, 1]; v = 0 is the bottom of the picture.
   const x = Math.min(img.width - 1, Math.max(0, u * (img.width - 1)));
   const y = Math.min(img.height - 1, Math.max(0, (1 - v) * (img.height - 1)));
