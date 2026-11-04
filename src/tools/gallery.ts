@@ -14,8 +14,16 @@ type State = Values & { font: string };
 
 const UNITS: Record<string, Key> = { mm: 'u.mm', deg: 'u.deg', '%': 'u.pct' };
 
-function paramControls(model: GalleryModel, ctl: Ctl<State>): Node[] {
+function paramControls(model: GalleryModel, outer: Ctl<State>): Node[] {
   const out: Node[] = [el('a', { class: 'back-link', href: '#/models' }, `← ${t('m.back')}`)];
+  const readouts: (() => void)[] = [];
+  const ctl: Ctl<State> = {
+    state: outer.state,
+    change(structural) {
+      readouts.forEach((update) => update());
+      outer.change(structural);
+    },
+  };
   let title = tr(['Settings', 'Настройки']);
   let fields: Node[] = [];
   let swatches: Node[] = [];
@@ -31,6 +39,13 @@ function paramControls(model: GalleryModel, ctl: Ctl<State>): Node[] {
       title = tr(p.section);
       continue;
     }
+    if ('readout' in p) {
+      const line = el('p', { class: 'readout' }, tr(p.readout(ctl.state)));
+      readouts.push(() => (line.textContent = tr(p.readout(ctl.state))));
+      fields.push(line);
+      continue;
+    }
+    if (p.when && !p.when(ctl.state)) continue;
     if ('hint' in p) {
       fields.push(hint(tr(p.hint)));
       continue;

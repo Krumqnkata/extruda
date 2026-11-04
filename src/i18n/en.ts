@@ -396,6 +396,14 @@ export const en = {
   'tool.guide.desc': "Typical settings for each material and fixes for common print problems.",
   'tool.quote.title': "Customer quote",
   'tool.quote.desc': "A clean quote with your logo and prices, saved as PDF from the browser.",
+  'tool.gear.title': "Gears",
+  'tool.gear.desc': "Involute gears by module and tooth count, with a matching second gear and the axle distance.",
+  'tool.bolt.title': "Bolts & nuts",
+  'tool.bolt.desc': "ISO metric threads from M3 to M30 with clearance tuned to your printer.",
+  'tool.pegboard.title': "Pegboard holders",
+  'tool.pegboard.desc': "Hooks, bins and tool holders for Skådis-style boards and standard pegboards.",
+  'tool.enclosure.title': "Electronics enclosure",
+  'tool.enclosure.desc': "A box for your board with standoffs, port openings and a vented lid. Raspberry Pi 4 ready.",
   'notfound': 'Page not found.',
 };
 

@@ -9,13 +9,18 @@ import { centerShape, textToPolygons } from '../core/text';
 export type Pair = readonly [string, string]; // [English, Български]
 export type Values = Record<string, number | string | boolean>;
 
+/** Shown only while `when` returns true; re-checked whenever a choice changes. */
+type Shown = { when?: (v: Values) => boolean };
+
 export type Param =
-  | { key: string; label: Pair; type: 'range'; min: number; max: number; step: number; unit?: 'mm' | 'deg' | '%' }
-  | { key: string; label: Pair; type: 'text'; multiline?: boolean }
-  | { key: string; label: Pair; type: 'select'; options: readonly (readonly [string, Pair])[] }
-  | { key: string; label: Pair; type: 'check' | 'color' | 'font' }
+  | ({ key: string; label: Pair; type: 'range'; min: number; max: number; step: number; unit?: 'mm' | 'deg' | '%' } & Shown)
+  | ({ key: string; label: Pair; type: 'text'; multiline?: boolean } & Shown)
+  | ({ key: string; label: Pair; type: 'select'; options: readonly (readonly [string, Pair])[] } & Shown)
+  | ({ key: string; label: Pair; type: 'check' | 'color' | 'font' } & Shown)
   | { section: Pair }
-  | { hint: Pair };
+  | ({ hint: Pair } & Shown)
+  /** A line of computed values that stays up to date while the settings change. */
+  | { readout: (v: Values) => Pair };
 
 export type Category = 'desk' | 'home' | 'gifts' | 'pets' | 'holiday' | 'parts';
 

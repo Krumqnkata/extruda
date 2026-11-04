@@ -51,7 +51,17 @@ download an STL or a multi-colour 3MF.
 A gallery of everyday prints you personalise in seconds: a dual-name illusion that reads one name from the front and
 another from the side, rings and bracelets with a name, a perpetual desk calendar, phone & tablet stand, cable organizer,
 pen cup with a name wrapped around it, desk name plate with stand, wall hook, plant pot with saucer, door wedge, coaster,
-bookmark, gift tag, Christmas ornament, a two-sided pet ID tag, a print-in-place hinge and a snap-fit clip.
+bookmark, gift tag, Christmas ornament and a two-sided pet ID tag.
+
+### Parts
+
+| | Tool | What it does |
+| --- | --- | --- |
+| ⚙️ | **Gears** | Involute spur or helical gears by module and tooth count, with a matching second gear, axle distance and ratio. |
+| 🔩 | **Bolts & nuts** | ISO metric threads from M3 to M30 with clearance you can tune. Not for loads or anything safety-related. |
+| 🧰 | **Pegboard holders** | Hooks, bins and tool holders for Skådis-style boards and standard pegboards. Measure your board and print one first. |
+| 📟 | **Electronics enclosure** | Standoffs, port openings and a vented lid. Raspberry Pi 4 profile from the official drawing, or enter your own board. |
+| 🚪 | **Hinge & snap-fit clip** | A hinge that prints assembled and a clip with flexible arms. |
 
 ### Printer tools
 
@@ -148,7 +158,17 @@ WebAssembly, а ти сваляш STL или многоцветен 3MF.
 Галерия с полезни предмети, които персонализираш за секунди: двойна илюзия, която отпред чете едно име, а отстрани друго,
 пръстени и гривни с име, вечен календар за бюро, стойка за телефон и таблет, органайзер за кабели, чаша за моливи с име,
 табелка с име за бюро, кукичка за стена, саксия с подложка, клин за врата, подложка за чаша, отметка за книга,
-етикет за подарък, коледна играчка, двустранен медальон за домашен любимец, панта, принтирана наведнъж, и щракаща закопчалка.
+етикет за подарък, коледна играчка и двустранен медальон за домашен любимец.
+
+### Части
+
+| | Инструмент | Какво прави |
+| --- | --- | --- |
+| ⚙️ | **Зъбни колела** | Еволвентни прави или скосени колела по модул и брой зъби, с второ колело, разстояние между осите и предавателно число. |
+| 🔩 | **Винтове и гайки** | Метрична резба от M3 до M30 с настройваема хлабина. Не е за товари и нищо свързано с безопасност. |
+| 🧰 | **Държачи за перфорирана дъска** | Кукички, кутийки и държачи за дъски тип Skådis и стандартни дъски. Измери дъската и първо принтирай един. |
+| 📟 | **Кутия за електроника** | Стойки, отвори за портове и проветрив капак. Профил за Raspberry Pi 4 по официалния чертеж или твоя платка. |
+| 🚪 | **Панта и щракаща закопчалка** | Панта, която се принтира сглобена, и закопчалка с гъвкави рамена. |
 
 ### Инструменти за принтера
 

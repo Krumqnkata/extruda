@@ -848,6 +848,15 @@ input[type='range'] {
 .verdict output.bad {
   color: var(--danger);
 }
+.readout {
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
 .back-link {
   display: inline-block;
   margin-bottom: 8px;

@@ -2,6 +2,10 @@
 // Functional parts: things that move, fasten or hold.
 import type { Manifold, ManifoldToplevel } from 'manifold-3d';
 import { toTriMesh } from '../core/manifold';
+import { ELECTRONICS } from './enclosure';
+import { GEARS } from './gears';
+import { PEGBOARD } from './pegboard';
+import { THREADS } from './threads';
 import { num, str, type GalleryModel } from './types';
 
 /** A cylinder along the X axis, starting at x0. */
@@ -22,6 +26,10 @@ function screwHole(m: ManifoldToplevel, x: number, y: number, r: number, t: numb
 }
 
 export const PARTS: GalleryModel[] = [
+  ...GEARS,
+  ...THREADS,
+  ...PEGBOARD,
+  ...ELECTRONICS,
   {
     id: 'hinge',
     category: 'parts',

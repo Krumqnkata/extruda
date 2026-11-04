@@ -37,6 +37,10 @@ export const icons = {
   snap: svg('<path d="M8 21V9l-2-2 2-3M16 21V9l2-2-2-3"/><path d="M4 21h16"/>'),
   book: svg('<path d="M4 5a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2z"/><path d="M4 20a2 2 0 0 0 2 2h13v-4"/><path d="M9 8h6"/>'),
   quote: svg('<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h7M9 16h7"/>'),
+  gear: svg('<circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="6"/>'),
+  bolt: svg('<path d="M8 3h8l2 3-2 3H8L6 6z"/><path d="M10 9v12h4V9M10 13l4-1M10 17l4-1"/>'),
+  pegboard: svg('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7v2M16 7v2M12 11v2M8 15v2M16 15v2"/>'),
+  chip: svg('<rect x="6" y="6" width="12" height="12" rx="1.5"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/>'),
   chevron: svg('<path d="m6 9 6 6 6-6"/>'),
   arrow: svg('<path d="M5 12h14m-5-5 5 5-5 5"/>'),
 };
