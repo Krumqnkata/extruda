@@ -2,7 +2,7 @@
 import type { Key } from '../i18n/en';
 import { icons } from '../ui/icons';
 
-export type Group = 'make' | 'models' | 'parts' | 'printer';
+export type Group = 'make' | 'models' | 'parts' | 'mesh' | 'printer';
 
 export interface ToolEntry {
   id: string;
@@ -19,6 +19,7 @@ export const GROUPS: { id: Group; title: Key }[] = [
   { id: 'make', title: 'group.make' },
   { id: 'models', title: 'group.models' },
   { id: 'parts', title: 'group.parts' },
+  { id: 'mesh', title: 'group.mesh' },
   { id: 'printer', title: 'group.printer' },
 ];
 
@@ -40,11 +41,15 @@ export const TOOLS: ToolEntry[] = [
   { id: 'enclosure', group: 'parts', route: 'models/enclosure', icon: icons.chip, title: 'tool.enclosure.title', desc: 'tool.enclosure.desc', load: () => import('./gallery') },
   { id: 'hinge', group: 'parts', route: 'models/hinge', icon: icons.hinge, title: 'tool.hinge.title', desc: 'tool.hinge.desc', load: () => import('./gallery') },
   { id: 'snap-fit', group: 'parts', route: 'models/snap-fit', icon: icons.snap, title: 'tool.snap.title', desc: 'tool.snap.desc', load: () => import('./gallery') },
+  { id: 'stl', group: 'mesh', icon: icons.cube, title: 'tool.stl.title', desc: 'tool.stl.desc', load: () => import('./stl-viewer') },
+  { id: 'mesh-check', group: 'mesh', route: 'mesh/check', icon: icons.check, title: 'tool.meshcheck.title', desc: 'tool.meshcheck.desc', load: () => import('./mesh-tools') },
+  { id: 'mesh', group: 'mesh', route: 'mesh/convert', icon: icons.swap, title: 'tool.meshconvert.title', desc: 'tool.meshconvert.desc', load: () => import('./mesh-tools') },
+  { id: 'mesh-orient', group: 'mesh', route: 'mesh/orient', icon: icons.rotate, title: 'tool.meshorient.title', desc: 'tool.meshorient.desc', load: () => import('./mesh-tools') },
+  { id: 'mesh-cut', group: 'mesh', route: 'mesh/cut', icon: icons.cut, title: 'tool.meshcut.title', desc: 'tool.meshcut.desc', load: () => import('./mesh-tools') },
   { id: 'calculators', group: 'printer', icon: icons.calc, title: 'tool.calc.title', desc: 'tool.calc.desc', load: () => import('./calculators') },
   { id: 'gcode', group: 'printer', icon: icons.code, title: 'tool.gcode.title', desc: 'tool.gcode.desc', load: () => import('./gcode') },
   { id: 'calibration', group: 'printer', icon: icons.ruler, title: 'tool.calibration.title', desc: 'tool.calibration.desc', load: () => import('./calibration') },
   { id: 'swatch', group: 'printer', icon: icons.swatch, title: 'tool.swatch.title', desc: 'tool.swatch.desc', load: () => import('./swatch') },
   { id: 'guide', group: 'printer', icon: icons.book, title: 'tool.guide.title', desc: 'tool.guide.desc', load: () => import('./guide') },
   { id: 'quote', group: 'printer', icon: icons.quote, title: 'tool.quote.title', desc: 'tool.quote.desc', load: () => import('./quote') },
-  { id: 'stl', group: 'printer', icon: icons.cube, title: 'tool.stl.title', desc: 'tool.stl.desc', load: () => import('./stl-viewer') },
 ];

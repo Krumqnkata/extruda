@@ -41,6 +41,10 @@ export const icons = {
   bolt: svg('<path d="M8 3h8l2 3-2 3H8L6 6z"/><path d="M10 9v12h4V9M10 13l4-1M10 17l4-1"/>'),
   pegboard: svg('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7v2M16 7v2M12 11v2M8 15v2M16 15v2"/>'),
   chip: svg('<rect x="6" y="6" width="12" height="12" rx="1.5"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/>'),
+  check: svg('<path d="M12 3 4 6v6c0 4.5 3.2 7.7 8 9 4.8-1.3 8-4.5 8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/>'),
+  swap: svg('<path d="M4 8h13l-3-3M20 16H7l3 3"/>'),
+  rotate: svg('<path d="M20 12a8 8 0 1 1-2.3-5.7L20 8.6"/><path d="M20 3.5v5.1h-5"/>'),
+  cut: svg('<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="m8.2 8.2 11.8 11.8M8.2 15.8 20 4"/>'),
   chevron: svg('<path d="m6 9 6 6 6-6"/>'),
   arrow: svg('<path d="M5 12h14m-5-5 5 5-5 5"/>'),
 };

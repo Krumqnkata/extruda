@@ -404,6 +404,17 @@ export const en = {
   'tool.pegboard.desc': "Hooks, bins and tool holders for Skådis-style boards and standard pegboards.",
   'tool.enclosure.title': "Electronics enclosure",
   'tool.enclosure.desc': "A box for your board with standoffs, port openings and a vented lid. Raspberry Pi 4 ready.",
+  'group.mesh': "STL tools",
+  'tool.mesh.title': "STL tools",
+  'tool.mesh.desc': "Fix, convert, turn and cut finished models. Files stay on your device.",
+  'tool.meshcheck.title': "Check & repair",
+  'tool.meshcheck.desc': "Finds holes, flipped faces, overhangs and thin walls, and repairs what can be repaired.",
+  'tool.meshconvert.title': "Convert & simplify",
+  'tool.meshconvert.desc': "STL, 3MF and OBJ, with scaling, mirroring, turning and fewer triangles.",
+  'tool.meshorient.title': "Auto orient",
+  'tool.meshorient.desc': "Suggests how to lay a model on the bed so it needs the least support.",
+  'tool.meshcut.title': "Cut to fit the bed",
+  'tool.meshcut.desc': "Splits a model too big for your printer into pieces with dowels for joining.",
   'notfound': 'Page not found.',
 };
 

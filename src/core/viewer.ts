@@ -7,8 +7,9 @@ import type { Part } from './mesh';
 export interface ViewPart extends Part {
   /** Smooth normals (for organic surfaces like lithophanes) instead of crisp flat faces. */
   smooth?: boolean;
-  /** Optional per-vertex RGB colours, rendered without lighting. */
+  /** Optional per-vertex RGB colours, rendered without lighting unless `lit` is set. */
   colors?: Float32Array;
+  lit?: boolean;
 }
 
 export class Viewer {
@@ -22,6 +23,7 @@ export class Viewer {
   private resize: ResizeObserver;
   private frame = 0;
   private lastRadius = 0;
+  private lines?: THREE.LineSegments;
   private onTheme = () => this.refreshTheme();
 
   constructor(private container: HTMLElement) {
@@ -85,7 +87,9 @@ export class Viewer {
       }
       geo.computeVertexNormals();
       const material = part.colors
-        ? new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.DoubleSide })
+        ? part.lit
+          ? new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.7, metalness: 0 })
+          : new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.DoubleSide })
         : new THREE.MeshStandardMaterial({ color: part.color, roughness: 0.6, metalness: 0.05 });
       this.group.add(new THREE.Mesh(geo, material));
     }
@@ -101,6 +105,36 @@ export class Viewer {
     if (opts.fit || changed || !this.lastRadius) this.fit(sphere);
     this.lastRadius = sphere.radius;
     this.render();
+  }
+
+  /** Shows line segments (two points each), e.g. a tool path, with one RGB colour per point. */
+  setLines(positions: Float32Array, colors: Float32Array, opts: { fit?: boolean } = {}): void {
+    this.clearLines();
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    this.lines = new THREE.LineSegments(geo, new THREE.LineBasicMaterial({ vertexColors: true }));
+    this.scene.add(this.lines);
+    const box = new THREE.Box3().setFromObject(this.lines);
+    if (!box.isEmpty()) {
+      this.updateGrid(box);
+      if (opts.fit !== false) this.fit(box.getBoundingSphere(new THREE.Sphere()));
+    }
+    this.render();
+  }
+
+  /** Limits the drawn lines to the first `segments` segments. */
+  setLineCount(segments: number): void {
+    this.lines?.geometry.setDrawRange(0, segments * 2);
+    this.render();
+  }
+
+  private clearLines(): void {
+    if (!this.lines) return;
+    this.scene.remove(this.lines);
+    this.lines.geometry.dispose();
+    (this.lines.material as THREE.Material).dispose();
+    this.lines = undefined;
   }
 
   private fit(sphere: THREE.Sphere): void {
@@ -156,6 +190,7 @@ export class Viewer {
     this.resize.disconnect();
     window.removeEventListener('themechange', this.onTheme);
     this.controls.dispose();
+    this.clearLines();
     this.setParts([]);
     this.renderer.dispose();
     this.canvas.remove();

@@ -63,17 +63,26 @@ bookmark, gift tag, Christmas ornament and a two-sided pet ID tag.
 | 📟 | **Electronics enclosure** | Standoffs, port openings and a vented lid. Raspberry Pi 4 profile from the official drawing, or enter your own board. |
 | 🚪 | **Hinge & snap-fit clip** | A hinge that prints assembled and a clip with flexible arms. |
 
+### STL tools
+
+| | Tool | What it does |
+| --- | --- | --- |
+| 🩺 | **Check & repair** | Finds holes, flipped faces, overhangs and thin walls. Repairs what it can and says so when it cannot. |
+| 🔁 | **Convert & simplify** | STL, 3MF and OBJ, with scaling, mirroring, turning and fewer triangles. |
+| 🧭 | **Auto orient** | Suggests how to lay a model on the bed so it needs the least support. |
+| ✂️ | **Cut to fit the bed** | Splits a model too big for your printer into pieces, with sockets and dowels for joining. |
+| 📐 | **STL analyzer** | Size, volume, estimated weight and cost, then send the grams to the calculators. |
+
 ### Printer tools
 
 | | Tool | What it does |
 | --- | --- | --- |
-| 🎨 | **G-code colour change** | Open a `.gcode` from PrusaSlicer, OrcaSlicer, Cura or Bambu Studio, pick heights, and Extruda inserts `M600`, `PAUSE`, `M601` or `M0`. Two-colour keychains without an AMS. |
+| 🎨 | **G-code colour change** | Open a `.gcode` from PrusaSlicer, OrcaSlicer, Cura or Bambu Studio, pick heights, and Extruda inserts `M600`, `PAUSE`, `M601` or `M0`. Preview the print layer by layer with the colours. |
 | 📏 | **Calibration prints** | Print-in-place tolerance test, overhang test and bridging test, each with its values printed on it. |
 | 🏷️ | **Filament swatches** | Labelled sample cards with a 0.4–2.0 mm thickness staircase; a whole list goes onto one plate. |
 | 🧮 | **Calculators** | Print cost & price, filament weight ↔ length, filament left on a spool, E-steps and flow calibration. |
 | 📖 | **Guide & troubleshooting** | Typical settings per material and fixes for common print problems, with search. |
 | 🧾 | **Customer quote** | A quote with your logo and prices, saved as PDF from the browser. Not a tax invoice. |
-| 📐 | **STL analyzer** | Open STL, 3MF or OBJ for size, volume, estimated weight and cost, then send the grams to the calculators. |
 
 <table>
 <tr>
@@ -170,17 +179,26 @@ WebAssembly, а ти сваляш STL или многоцветен 3MF.
 | 📟 | **Кутия за електроника** | Стойки, отвори за портове и проветрив капак. Профил за Raspberry Pi 4 по официалния чертеж или твоя платка. |
 | 🚪 | **Панта и щракаща закопчалка** | Панта, която се принтира сглобена, и закопчалка с гъвкави рамена. |
 
+### STL инструменти
+
+| | Инструмент | Какво прави |
+| --- | --- | --- |
+| 🩺 | **Проверка и поправка** | Намира дупки, обърнати стени, надвеси и тънки стени. Поправя каквото може и казва, когато не може. |
+| 🔁 | **Конвертор и опростяване** | STL, 3MF и OBJ, с мащаб, огледало, завъртане и по-малко триъгълници. |
+| 🧭 | **Автоматична ориентация** | Предлага как да легне моделът на плочата, за да иска най-малко подпори. |
+| ✂️ | **Рязане по плочата** | Разделя твърде голям модел на части с гнезда и щифтове за сглобяване. |
+| 📐 | **STL анализатор** | Размери, обем, тегло и цена, с прехвърляне към калкулаторите. |
+
 ### Инструменти за принтера
 
 | | Инструмент | Какво прави |
 | --- | --- | --- |
-| 🎨 | **Смяна на цвят в G-code** | Отвори `.gcode` от PrusaSlicer, OrcaSlicer, Cura или Bambu Studio, избери височини и Extruda добавя `M600`, `PAUSE`, `M601` или `M0`. |
+| 🎨 | **Смяна на цвят в G-code** | Отвори `.gcode` от PrusaSlicer, OrcaSlicer, Cura или Bambu Studio, избери височини и Extruda добавя `M600`, `PAUSE`, `M601` или `M0`. Прегледай принта слой по слой с цветовете. |
 | 📏 | **Калибрационни тестове** | Тест за хлабина (принтира се наведнъж), за надвес и за мостове, с отпечатани стойности. |
 | 🏷️ | **Мостри на филамент** | Надписани мостри със стъпала 0,4–2,0 мм; цял списък на една плоча. |
 | 🧮 | **Калкулатори** | Цена на принт, тегло ↔ дължина, оставащ филамент на масура, E-steps и flow. |
 | 📖 | **Справочник и проблеми** | Типични настройки за всеки материал и решения за честите проблеми, с търсене. |
 | 🧾 | **Оферта за клиент** | Оферта с твоето лого и цени, запазена като PDF от браузъра. Не е данъчна фактура. |
-| 📐 | **STL анализатор** | Размери, обем, тегло и цена за STL, 3MF или OBJ, с прехвърляне към калкулаторите. |
 
 ### Защо е удобно
 

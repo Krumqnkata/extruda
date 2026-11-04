@@ -663,6 +663,10 @@ input[type='range'] {
   display: grid;
   gap: 16px;
 }
+/* A slider and its number need more room than one column of the field grid. */
+.fields .field.range {
+  grid-column: 1 / -1;
+}
 
 /* ------------------------------------------------------------ results / calculators */
 .results {
@@ -856,6 +860,34 @@ input[type='range'] {
   font-size: 13px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
+}
+.result-value.bad {
+  color: var(--danger);
+}
+.verdict.is-bad {
+  color: var(--danger);
+}
+.orient-list {
+  display: grid;
+  gap: 10px;
+}
+.orient-choice {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--surface-2);
+}
+.gcode-view {
+  flex: none;
+  height: 380px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--stage);
+}
+[hidden] {
+  display: none !important;
 }
 .back-link {
   display: inline-block;

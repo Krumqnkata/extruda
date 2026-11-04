@@ -35,6 +35,15 @@ export function partsToSTL(parts: Part[], header?: string): Uint8Array {
   return toSTL(mergeMeshes(parts.map((p) => p.mesh)), header);
 }
 
+/** Wavefront OBJ text. */
+export function toOBJ(mesh: TriMesh, name = 'Extruda'): string {
+  const lines = [`# ${name}`, 'o model'];
+  const p = mesh.positions, ix = mesh.indices;
+  for (let i = 0; i < p.length; i += 3) lines.push(`v ${num(p[i])} ${num(p[i + 1])} ${num(p[i + 2])}`);
+  for (let t = 0; t < ix.length; t += 3) lines.push(`f ${ix[t] + 1} ${ix[t + 1] + 1} ${ix[t + 2] + 1}`);
+  return `${lines.join('\n')}\n`;
+}
+
 const xmlEscape = (s: string) => s.replace(/[<>&"']/g, (c) => `&#${c.charCodeAt(0)};`);
 const num = (n: number) => (Math.round(n * 1e5) / 1e5).toString();
 

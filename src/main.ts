@@ -187,7 +187,8 @@ async function route(): Promise<void> {
   cleanup?.();
   cleanup = undefined;
   main.replaceChildren();
-  const tool = TOOLS.find((x) => x.id === currentRoute());
+  const path = parseHash(location.hash).path;
+  const tool = TOOLS.find((x) => toolPath(x) === path) ?? TOOLS.find((x) => x.id === currentRoute());
   document.title = tool ? `${t(tool.title)} · Extruda` : `Extruda · ${t('app.tagline')}`;
   document.body.dataset.page = tool ? 'tool' : 'home';
   if (!tool) {
