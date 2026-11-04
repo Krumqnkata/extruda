@@ -23,6 +23,7 @@ generate are yours: print them, share them or sell them without restriction.
 | [opentype.js](https://github.com/opentypejs/opentype.js) | MIT | © 2020 Frederik De Bleser |
 | [QR Code Generator](https://github.com/kazuhikoarase/qrcode-generator) (`qrcode-generator`) | MIT | © 2009 Kazuhiko Arase |
 | [fflate](https://github.com/101arrowz/fflate) | MIT | © Arjun Barrett |
+| [OpenSCAD](https://github.com/openscad/openscad), compiled to WebAssembly by [openscad-wasm-prebuilt](https://github.com/lorenzowritescode/openscad-wasm) | GPL-2.0-or-later | © The OpenSCAD developers |
 | [Workbox](https://github.com/GoogleChrome/workbox) (offline service worker, via `vite-plugin-pwa`) | MIT | © Google LLC |
 
 The Apache-2.0 license of Manifold is compatible with GPLv3/AGPLv3.

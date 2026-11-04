@@ -207,6 +207,10 @@ export function mountModelTool<S extends { font: string }>(spec: ModelToolSpec<S
   const dl = [
     button(t('a.stl'), () => download(partsToSTL(parts, `Extruda ${spec.id}`), `${name()}.stl`, 'model/stl'), { primary: true, icon: icons.download }),
     button(t('a.3mf'), () => download(objectsTo3MF(partsToObjects(parts, !!spec.separateObjects, spec.fileName(state)), spec.fileName(state)), `${name()}.3mf`, 'model/3mf'), { icon: icons.layers }),
+    button(t('a.3mfSlicer'), () => {
+      download(objectsTo3MF(partsToObjects(parts, !!spec.separateObjects, spec.fileName(state)), spec.fileName(state), { slicerFilaments: true }), `${name()}_filaments.3mf`, 'model/3mf');
+      setStatus(t('s.slicerBeta'));
+    }, { icon: icons.palette }),
   ];
   shell.actions.append(
     ...dl,

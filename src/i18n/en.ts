@@ -422,6 +422,10 @@ export const en = {
   'tool.filamentart.desc': "A photo in shades of colour from a few filament swaps, with the heights to change at.",
   'tool.terrain.title': "3D map",
   'tool.terrain.desc': "Real terrain of a mountain or any area, as a printable relief. Downloads map data when you ask.",
+  'tool.openscad.title': "OpenSCAD templates",
+  'tool.openscad.desc': "Paste OpenSCAD code and get sliders for its settings and a model to print.",
+  'a.3mfSlicer': "Bambu/Orca 3MF (beta)",
+  's.slicerBeta': "Beta: every colour is set as its own filament. Add that many filaments in the slicer first, then check the parts before printing.",
   'notfound': 'Page not found.',
 };
 

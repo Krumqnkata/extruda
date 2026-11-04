@@ -6,15 +6,24 @@ export default defineConfig({
   base: '/extruda/',
   optimizeDeps: { exclude: ['manifold-3d'] },
   build: { target: 'es2022', chunkSizeWarningLimit: 1500 },
+  // The OpenSCAD worker loads its engine on demand, which needs ES module workers.
+  worker: { format: 'es' },
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
       // Everything the tools need (code, WASM, fonts) is cached so Extruda works offline.
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ttf,wasm}'],
+        // The 11 MB OpenSCAD engine is cached when first used, not for everyone up front.
+        globIgnores: ['**/assets/openscad-*.js'],
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         navigateFallback: 'index.html',
         runtimeCaching: [
+          {
+            urlPattern: /\/assets\/openscad-[^/]*\.js$/,
+            handler: 'CacheFirst',
+            options: { cacheName: 'openscad-engine', expiration: { maxEntries: 2 } },
+          },
           {
             urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/,
             handler: 'CacheFirst',

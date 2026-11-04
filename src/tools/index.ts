@@ -35,6 +35,7 @@ export const TOOLS: ToolEntry[] = [
   { id: 'stencil', group: 'make', icon: icons.stencil, title: 'tool.stencil.title', desc: 'tool.stencil.desc', load: () => import('./stencil') },
   { id: 'filament-art', group: 'make', icon: icons.palette, title: 'tool.filamentart.title', desc: 'tool.filamentart.desc', load: () => import('./filament-art') },
   { id: 'terrain', group: 'make', icon: icons.mountain, title: 'tool.terrain.title', desc: 'tool.terrain.desc', load: () => import('./terrain') },
+  { id: 'openscad', group: 'make', icon: icons.code, title: 'tool.openscad.title', desc: 'tool.openscad.desc', load: () => import('./scad-tool') },
   { id: 'lithophane', group: 'make', icon: icons.image, title: 'tool.lithophane.title', desc: 'tool.lithophane.desc', load: () => import('./lithophane') },
   { id: 'models', group: 'models', icon: icons.sparkles, title: 'tool.models.title', desc: 'tool.models.desc', load: () => import('./gallery') },
   { id: 'gear', group: 'parts', route: 'models/gear', icon: icons.gear, title: 'tool.gear.title', desc: 'tool.gear.desc', load: () => import('./gallery') },

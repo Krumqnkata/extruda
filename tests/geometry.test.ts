@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { strFromU8, unzipSync } from 'fflate';
 import { beforeAll, describe, expect, it } from 'vitest';
-import { partsToSTL, to3MF, toSTL } from '../src/core/export';
+import { objectsTo3MF, partsToSTL, to3MF, toSTL } from '../src/core/export';
 import { lithophane, LITHO_DEFAULTS } from '../src/core/lithophane';
 import { build, toTriMesh } from '../src/core/manifold';
 import { meshStats, mergeMeshes, type Part, type TriMesh } from '../src/core/mesh';
@@ -111,6 +111,46 @@ describe('export', () => {
     const stl = toSTL(tri);
     expect(stl.length).toBe(84 + 50);
     expect(new DataView(stl.buffer).getUint32(80, true)).toBe(1);
+  });
+
+  describe('per-part filaments for Bambu Studio and OrcaSlicer', () => {
+    const base: Part = { name: 'Base', color: '#112233', mesh: tri };
+    const text: Part = { name: 'Text & more', color: '#FF7A1A', mesh: tri };
+    const frame: Part = { name: 'Frame', color: '#ff7a1a', mesh: tri }; // same colour, other case
+    const read = (bytes: Uint8Array) => {
+      const files = unzipSync(bytes);
+      return { model: strFromU8(files['3D/3dmodel.model']), config: files['Metadata/model_settings.config'] && strFromU8(files['Metadata/model_settings.config']) };
+    };
+
+    it('leaves the plain 3MF exactly as it was', () => {
+      expect(read(objectsTo3MF([{ name: 'A', parts: [base, text] }])).config).toBeUndefined();
+    });
+
+    it('gives each colour one filament number, on matching object and part ids', () => {
+      const { model, config } = read(objectsTo3MF([{ name: 'Tag', parts: [base, text, frame] }], 'Tag', { slicerFilaments: true }));
+      const meshIds = [...model.matchAll(/<object id="(\d+)"[^>]*pid=/g)].map((x) => x[1]);
+      const assembly = /<object id="(\d+)"[^>]*><components>/.exec(model)![1];
+      expect(config).toContain(`<object id="${assembly}">`);
+      const parts = [...config!.matchAll(/<part id="(\d+)" subtype="normal_part"><metadata key="name" value="[^"]*"\/><metadata key="extruder" value="(\d+)"\/>/g)];
+      expect(parts.map((x) => x[1])).toEqual(meshIds);
+      expect(parts.map((x) => x[2])).toEqual(['1', '2', '2']);
+      expect(config).toContain('Text &#38; more');
+    });
+
+    it('numbers filaments across a whole plate and gives every object its own settings', () => {
+      const { config } = read(objectsTo3MF([{ name: 'A', parts: [base] }, { name: 'B', parts: [text] }, { name: 'C', parts: [base, text] }], 'Plate', { slicerFilaments: true }));
+      const ids = [...config!.matchAll(/<object id="(\d+)">/g)].map((x) => x[1]);
+      expect(new Set(ids).size).toBe(3); // the importer rejects duplicate object ids
+      const extruders = [...config!.matchAll(/<object id="\d+"><metadata key="name" value="[^"]*"\/><metadata key="extruder" value="(\d+)"/g)].map((x) => x[1]);
+      expect(extruders).toEqual(['1', '2', '1']);
+    });
+
+    it('stays honest about which program made the file', () => {
+      // Claiming to be Bambu Studio would make it load as a full project, with settings this file does not have.
+      const { model } = read(objectsTo3MF([{ name: 'A', parts: [base] }], 'A', { slicerFilaments: true }));
+      expect(model).toContain('<metadata name="Application">Extruda</metadata>');
+      expect(model).not.toMatch(/BambuStudio|OrcaSlicer/);
+    });
   });
 
   it('writes a 3MF with one object per part plus an assembly', () => {

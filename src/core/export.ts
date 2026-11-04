@@ -57,16 +57,33 @@ export function to3MF(parts: Part[], title = 'Extruda model'): Uint8Array {
   return objectsTo3MF([{ name: title, parts }], title);
 }
 
+export interface ThreeMFOptions {
+  /**
+   * Adds the per-part filament numbers that Bambu Studio and OrcaSlicer read from
+   * Metadata/model_settings.config. Both read this file whichever program made the 3MF, so the
+   * file stays honest about its origin. Other slicers ignore it. Each colour gets its own filament.
+   */
+  slicerFilaments?: boolean;
+}
+
 /** Several independent objects (e.g. a full build plate), each made of one or more coloured parts. */
-export function objectsTo3MF(models: ModelObject[], title = 'Extruda model'): Uint8Array {
+export function objectsTo3MF(models: ModelObject[], title = 'Extruda model', options: ThreeMFOptions = {}): Uint8Array {
   const allParts = models.flatMap((o) => o.parts);
   const materialsId = 1;
   let nextId = 2;
   let partIndex = 0;
   const resources: string[] = [];
   const items: string[] = [];
+  const filaments = new Map<string, number>();
+  const filamentOf = (color: string) => {
+    const key = color.toLowerCase();
+    if (!filaments.has(key)) filaments.set(key, filaments.size + 1);
+    return filaments.get(key)!;
+  };
+  const settings: string[] = [];
   for (const model of models) {
     const components: string[] = [];
+    const partSettings: string[] = [];
     for (const part of model.parts) {
       const id = nextId++;
       const p = part.mesh.positions;
@@ -79,8 +96,14 @@ export function objectsTo3MF(models: ModelObject[], title = 'Extruda model'): Ui
         `<object id="${id}" name="${xmlEscape(part.name)}" type="model" pid="${materialsId}" pindex="${partIndex++}"><mesh><vertices>${verts.join('')}</vertices><triangles>${tris.join('')}</triangles></mesh></object>`,
       );
       components.push(`<component objectid="${id}"/>`);
+      partSettings.push(
+        `<part id="${id}" subtype="normal_part"><metadata key="name" value="${xmlEscape(part.name)}"/><metadata key="extruder" value="${filamentOf(part.color)}"/></part>`,
+      );
     }
     const assemblyId = nextId++;
+    settings.push(
+      `<object id="${assemblyId}"><metadata key="name" value="${xmlEscape(model.name)}"/><metadata key="extruder" value="${model.parts.length ? filamentOf(model.parts[0].color) : 1}"/>${partSettings.join('')}</object>`,
+    );
     resources.push(`<object id="${assemblyId}" name="${xmlEscape(model.name)}" type="model"><components>${components.join('')}</components></object>`);
     items.push(`<item objectid="${assemblyId}"/>`);
   }
@@ -101,16 +124,21 @@ ${resources.join('\n')}
 <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
 <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
 <Default Extension="model" ContentType="application/vnd.ms-package.3dmanufacturing-3dmodel+xml"/>
+<Default Extension="config" ContentType="text/xml"/>
 </Types>`;
   const rels = `<?xml version="1.0" encoding="UTF-8"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
 <Relationship Target="/3D/3dmodel.model" Id="rel0" Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel"/>
 </Relationships>`;
-  return zipSync({
+  const files: Record<string, Uint8Array> = {
     '[Content_Types].xml': strToU8(contentTypes),
     '_rels/.rels': strToU8(rels),
     '3D/3dmodel.model': strToU8(model),
-  });
+  };
+  if (options.slicerFilaments) {
+    files['Metadata/model_settings.config'] = strToU8(`<?xml version="1.0" encoding="UTF-8"?>\n<config>\n${settings.join('\n')}\n</config>\n`);
+  }
+  return zipSync(files);
 }
 
 export function zipFiles(files: Record<string, Uint8Array>): Uint8Array {

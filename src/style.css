@@ -983,6 +983,27 @@ input[type='range'] {
   align-items: center;
   gap: 8px;
 }
+.scad-code {
+  font-size: 13px;
+  line-height: 1.45;
+  white-space: pre;
+  overflow-x: auto;
+}
+.scad-log {
+  margin: 0;
+  max-height: 220px;
+  overflow: auto;
+  padding: 10px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  font: 12px/1.4 ui-monospace, 'Cascadia Code', Consolas, monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.scad-section {
+  margin: 8px 0 0;
+  font-size: 14px;
+}
 .back-link {
   display: inline-block;
   margin-bottom: 8px;

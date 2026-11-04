@@ -44,6 +44,7 @@ download an STL or a multi-colour 3MF.
 | 📦 | **Box with lid** | Boxes to the millimetre with dividers and a slip-on, plug-in or sliding lid, adjustable clearance and engraved or inlaid lid text. |
 | 🍪 | **Cookie cutter & stamp** | Cutters from text, icons, SVG or PNG with a thin cutting edge and grip rim, plus a matching embossing stamp. |
 | ✂️ | **Stencil** | Text or artwork cut out of a plate, with automatic bridges so the middles of O, A, P and B stay in place. |
+| 🧾 | **OpenSCAD templates** | Paste OpenSCAD code and its Customizer settings become sliders. Runs the real engine in your browser, downloaded only when first used. |
 | 🖼️ | **Lithophane** | Flat, curved or cylindrical lithophanes from any photo, with a back-lit preview. |
 | 🎨 | **Filament art** | A photo in shades of colour from a few filament swaps, with an estimated preview and the heights to change at. |
 | 🏔️ | **3D map** | Real terrain of any area. The only tool that uses the internet: it asks for the chosen area from a public elevation service, and only when you press the button. |
@@ -100,17 +101,25 @@ bookmark, gift tag, Christmas ornament and a two-sided pet ID tag.
 <td><img src="docs/screenshots/cutter.png" alt="Cookie cutter" /></td>
 <td><img src="docs/screenshots/calibration.png" alt="Calibration prints" /></td>
 </tr>
+<tr>
+<td><img src="docs/screenshots/gear.png" alt="Gears" /></td>
+<td><img src="docs/screenshots/bolt.png" alt="Bolts and nuts" /></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/filament-art.png" alt="Filament art" /></td>
+<td><img src="docs/screenshots/openscad.png" alt="OpenSCAD templates" /></td>
+</tr>
 </table>
 
 ### Why it's nice
 
 - **Private by design** – nothing you type or open leaves your device. The one exception is the 3D map, which says so on the page.
 - **Watertight models** – built with the [Manifold](https://github.com/elalish/manifold) geometry kernel, so slicers never complain about holes or self-intersections.
-- **Multi-colour ready** – the 3MF keeps text and base as separate parts, so Bambu Studio, OrcaSlicer and PrusaSlicer can assign a filament to each (AMS / MMU / colour swap).
+- **Multi-colour ready** – the 3MF keeps text and base as separate parts, so Bambu Studio, OrcaSlicer and PrusaSlicer can assign a filament to each (AMS / MMU / colour swap). A beta Bambu/Orca export sets the filament per part for you.
 - **Cyrillic and Latin** – every bundled font writes *Иван* as well as *Ivan*.
 - **Bilingual UI** – Bulgarian and English, light and dark theme, works on phones.
 - **Share a design as a link** – the settings travel in the URL (Wi-Fi passwords never do). Save favourite settings per tool.
-- **Works offline** – install it as an app; tools, fonts and the geometry engine are cached.
+- **Works offline** – install it as an app; tools, fonts and the geometry engine are cached. The 3D map needs the internet, and the OpenSCAD engine (about 11 MB) is cached the first time you use it.
 
 ### Printing tips
 
@@ -163,6 +172,7 @@ WebAssembly, а ти сваляш STL или многоцветен 3MF.
 | 📦 | **Кутия с капак** | Кутии до милиметър с прегради и нахлузващ, вграден или плъзгащ капак, настройваема хлабина и надпис на капака. |
 | 🍪 | **Калъп за сладки и печат** | Калъпи от текст, иконка, SVG или PNG с тънък режещ ръб и ръб за хващане, плюс печат за релеф. |
 | ✂️ | **Шаблон (стенцил)** | Текст или рисунка, изрязани от плочка, с автоматични мостчета, за да не падат средите на О, А, Р и Б. |
+| 🧾 | **OpenSCAD шаблони** | Постави OpenSCAD код и настройките му стават плъзгачи. Работи с истинския двигател в браузъра, изтеглен едва при първа употреба. |
 | 🖼️ | **Литофан** | Плосък, извит или цилиндричен литофан от снимка с преглед „на светлина“. |
 | 🎨 | **Картина от филамент** | Снимка в нюанси само с няколко смени на филамента, с приблизителен преглед и височините за смяна. |
 | 🏔️ | **3D карта** | Истинският релеф на всяка област. Единственият инструмент, който ползва интернет: изисква избраната област от публична услуга и то само когато натиснеш бутона. |
@@ -210,11 +220,11 @@ WebAssembly, а ти сваляш STL или многоцветен 3MF.
 
 - **Поверителност** – нищо, което пишеш или отваряш, не напуска устройството ти. Единственото изключение е 3D картата и това пише на страницата ѝ.
 - **Затворени (watertight) модели** – геометрията се строи с [Manifold](https://github.com/elalish/manifold), така че слайсърът няма да се оплаква от дупки.
-- **Готово за многоцветен печат** – в 3MF файла текстът и основата са отделни части – за AMS, MMU или смяна на филамент.
+- **Готово за многоцветен печат** – в 3MF файла текстът и основата са отделни части – за AMS, MMU или смяна на филамент. Бета експорт за Bambu/Orca задава филамента за всяка част вместо теб.
 - **Кирилица и латиница** – всички шрифтове пишат *Иван* толкова добре, колкото и *Ivan*.
 - **Двуезичен интерфейс** – български и английски, светла и тъмна тема, работи и на телефон.
 - **Споделяне с линк** – настройките са в адреса (паролите за Wi-Fi никога). Любими настройки за всеки инструмент.
-- **Работи офлайн** – инсталирай го като приложение; инструментите, шрифтовете и 3D двигателят се кешират.
+- **Работи офлайн** – инсталирай го като приложение; инструментите, шрифтовете и 3D двигателят се кешират. 3D картата иска интернет, а двигателят на OpenSCAD (около 11 MB) се кешира при първа употреба.
 
 ### Съвети за принтиране
 

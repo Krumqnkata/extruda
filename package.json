@@ -25,6 +25,7 @@
   "dependencies": {
     "fflate": "^0.8.3",
     "manifold-3d": "^3.5.4",
+    "openscad-wasm-prebuilt": "^1.2.0",
     "opentype.js": "^2.0.0",
     "qrcode-generator": "^2.0.4",
     "three": "^0.187.0"
